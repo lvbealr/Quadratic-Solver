@@ -30,19 +30,19 @@ void SquareSolver(double const a, double const b, double const c)
     }
     else
     {
-        double const D = b*b - 4*a*c;
+        double const discriminant = b*b - 4*a*c;
         if (D < 0)
         {
             printf("D < 0: no real solutions");
         }
-        else if (D == 0)
+        else if (discriminant == 0)
         {
             printf("D = 0\nSolution: x = %lf", -b/2/a);
         }
         else
         {
-            double x1 = (-b + sqrt(D))/2/a;
-            double x2 = (-b -sqrt(D))/2/a;
+            double x1 = (-b + sqrt(discriminant))/2/a;
+            double x2 = (-b -sqrt(discriminant))/2/a;
             printf("D > 0\nSolutions: x1 = %lf\tx2 = %lf", x1, x2);
         }
     }
