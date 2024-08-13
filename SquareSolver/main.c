@@ -1,7 +1,20 @@
 #include <stdio.h>
 #include <math.h>
 
-void SquareSolver(double const a, double const b, double const c)
+void PrintRoots(int code, double array[2])
+{
+    switch (code)
+    {
+        case 0: printf("Infinitely many solutions"); break;
+        case 1: printf("No solutions"); break;
+        case 2: printf("It is linear (non-quadratic) equation\nSolution: x = %lf", array[0]); break;
+        case 3: printf("D < 0: no real solutions"); break;
+        case 4: printf("D = 0\nSolution: x = %lf", array[0]); break;
+        case 5: printf("D > 0\nSolutions: x = %lf\t x = %lf", array[0], array[1]); break;
+    }
+}
+
+void SquareSolver(double const a, double const b, double const c, double array[2])
 {
     const double eps = 1e-06;
     if (a == 0)
@@ -10,22 +23,24 @@ void SquareSolver(double const a, double const b, double const c)
         {
             if (c == 0)
             {
-                printf("0 = 0: infinitely many solutions");
+                PrintRoots(0, array);
             }
             else
             {
-                printf("%lf != 0: no solutions", c);
+                PrintRoots(1, array);
             }
         }
         else
         {
             if (c == 0)
             {
-                printf("It is linear (non-quadratic) equation\nSolution: x = 0");
+                array[0] = 0;
+                PrintRoots(2, array);
             }
             else
             {
-                printf("It is linear (non-quadratic) equation\nSolution: x = %lf", -c/b);
+                array[0] = -c/b;
+                PrintRoots(2, array);
             }
         }
     }
@@ -34,17 +49,17 @@ void SquareSolver(double const a, double const b, double const c)
         double const discriminant = b*b - 4*a*c;
         if (discriminant < eps)
         {
-            printf("D < 0: no real solutions");
+            PrintRoots(3, array);
         }
-        else if (-eps <= discriminant <= eps)
+        else if (fabs(discriminant) <= eps)
         {
-            printf("D = 0\nSolution: x = %lf", -b/2/a);
+            array[0] = -b/2/a;
+            PrintRoots(4, array);
         }
         else
         {
-            double x1 = (-b + sqrt(discriminant))/2/a;
-            double x2 = (-b -sqrt(discriminant))/2/a;
-            printf("D > 0\nSolutions: x1 = %lf\tx2 = %lf", x1, x2);
+            array[0] = (-b + sqrt(discriminant))/2/a; array[1] = (-b -sqrt(discriminant))/2/a;
+            PrintRoots(5, array);
         }
     }
 }
@@ -52,8 +67,9 @@ void SquareSolver(double const a, double const b, double const c)
 int main(void)
 {
     double a, b, c;
+    double array[2];
     printf("Input values of a, b, c coefficients:");
     scanf("%lf %lf %lf", &a, &b, &c);
-    SquareSolver(a, b, c);
+    SquareSolver(a, b, c, array);
     return 0;
 }
