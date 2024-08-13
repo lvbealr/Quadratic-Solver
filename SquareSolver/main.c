@@ -32,16 +32,8 @@ void SquareSolver(double const a, double const b, double const c, double array[2
         }
         else
         {
-            if (c == 0)
-            {
-                array[0] = 0;
-                PrintRoots(2, array);
-            }
-            else
-            {
-                array[0] = -c/b;
-                PrintRoots(2, array);
-            }
+            array[0] = -c/b;
+            PrintRoots(2, array);
         }
     }
     else
