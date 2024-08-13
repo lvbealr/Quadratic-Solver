@@ -3,6 +3,7 @@
 
 void SquareSolver(double const a, double const b, double const c)
 {
+    const double eps = 1e-06;
     if (a == 0)
     {
         if (b == 0)
@@ -31,11 +32,11 @@ void SquareSolver(double const a, double const b, double const c)
     else
     {
         double const discriminant = b*b - 4*a*c;
-        if (D < 0)
+        if (discriminant < eps)
         {
             printf("D < 0: no real solutions");
         }
-        else if (discriminant == 0)
+        else if (-eps <= discriminant <= eps)
         {
             printf("D = 0\nSolution: x = %lf", -b/2/a);
         }
