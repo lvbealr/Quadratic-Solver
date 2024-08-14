@@ -16,11 +16,11 @@ void PrintRoots(int code, double roots[2])
 int SquareSolver(double const a, double const b, double const c, double roots[2])
 {
     const double eps = 1e-07;
-    if (a == 0)
+    if (fabs(a) <= eps)
     {
-        if (b == 0)
+        if (fabs(b) <= eps)
         {
-            if (c == 0)
+            if (fabs(c) <= eps)
             {
                 return 0;
             }
@@ -57,7 +57,7 @@ int SquareSolver(double const a, double const b, double const c, double roots[2]
 
 int main(void)
 {
-    double a, b, c;
+    double a = NAN; double b = NAN; double c = NAN;
     double roots[2] = {NAN, NAN};
     printf("Input values of a, b, c coefficients:");
     scanf("%lf %lf %lf", &a, &b, &c);
