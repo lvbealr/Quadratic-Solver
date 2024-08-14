@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 
-void PrintRoots(double *roots)
+void PrintRoots(double roots[3])
 {
     switch ((int) roots[0])
     {
