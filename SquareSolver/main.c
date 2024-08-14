@@ -57,7 +57,7 @@ int SquareSolver(double const a, double const b, double const c, double roots[2]
 
 int main(void)
 {
-    double a = NAN; double b = NAN; double c = NAN;
+    double a = NAN, b = NAN, c = NAN;
     double roots[2] = {NAN, NAN};
     printf("Input values of a, b, c coefficients:");
     scanf("%lf %lf %lf", &a, &b, &c);
