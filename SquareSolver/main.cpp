@@ -3,7 +3,7 @@
 
 const double EPS = 1e-07;
 
-enum SolveCode {
+enum solveCode {
     LINEAR_INF_ROOTS = 0, // a, b, c = 0
     LINEAR_NO_ROOTS = 1, // a, b = 0; c != 0
     LINEAR_ONE_ROOT = 2, // a = 0; b != 0
@@ -12,7 +12,7 @@ enum SolveCode {
     QUADRATIC_TWO_ROOTS = 5 // D > 0
 };
 
-void PrintRoots(SolveCode code, double roots[2]) {
+void printRoots(solveCode code, double roots[2]) {
     switch (code) {
         case LINEAR_INF_ROOTS: printf("Infinitely many solutions"); break;
         case LINEAR_NO_ROOTS: printf("No solutions"); break;
@@ -23,9 +23,9 @@ void PrintRoots(SolveCode code, double roots[2]) {
     }
 }
 
-SolveCode Code;
+solveCode Code;
 
-SolveCode LinearSolver(double const b, double const c, double roots[2]) {
+solveCode linearSolver(double const b, double const c, double roots[2]) {
     if (fabs(b) <= EPS) {
         if (fabs(c) <= EPS) {
             Code = LINEAR_INF_ROOTS;
@@ -41,7 +41,7 @@ SolveCode LinearSolver(double const b, double const c, double roots[2]) {
     return Code;
 }
 
-SolveCode SquareSolver(double const a, double const b, double const c, double roots[2]) {
+solveCode squareSolver(double const a, double const b, double const c, double roots[2]) {
     double const discriminant = b*b - 4*a*c;
     if (discriminant < -EPS) {
         Code = QUADRATIC_NO_ROOTS;
@@ -57,12 +57,12 @@ SolveCode SquareSolver(double const a, double const b, double const c, double ro
     return Code;
 }
 
-SolveCode Solve(double const a, double const b, double const c, double roots[2]) {
+solveCode Solve(double const a, double const b, double const c, double roots[2]) {
     if (fabs(a) <= EPS) {
-        Code = LinearSolver(b, c, roots);
+        Code = linearSolver(b, c, roots);
     }
     else {
-        Code = SquareSolver(a, b, c, roots);
+        Code = squareSolver(a, b, c, roots);
     }
     return Code;
 }
@@ -72,7 +72,7 @@ int main(void) {
     double roots[2] = {NAN, NAN};
     printf("Input values of a, b, c coefficients:");
     scanf("%lf %lf %lf", &a, &b, &c);
-    SolveCode code = Solve(a, b, c, roots);
-    PrintRoots(code, roots);
+    solveCode code = Solve(a, b, c, roots);
+    printRoots(code, roots);
     return 0;
 }
