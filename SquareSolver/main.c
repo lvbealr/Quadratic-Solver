@@ -11,36 +11,48 @@ void PrintRoots(int code, double roots[2]) {
         case 5: printf("D > 0\n[0] Solution: x = %lf\n[1] Solution: x = %lf", roots[0], roots[1]); break;
     }
 }
+
+enum SolveCode {
+    linear_inf_roots, // a, b, c = 0
+    linear_no_roots, // a, b = 0; c != 0
+    linear_one_root, // a = 0; b != 0
+    quadratic_no_roots, // D < 0
+    quadratic_one_root, // D = 0
+    quadratic_two_roots // D > 0
+};
+
 int SquareSolver(double const a, double const b, double const c, double roots[2]) {
+    enum SolveCode Code;
     const double eps = 1e-07;
     if (fabs(a) <= eps) {
         if (fabs(b) <= eps) {
             if (fabs(c) <= eps) {
-                return 0;
+                Code = linear_inf_roots;
             }
             else {
-                return 1;
+                Code = linear_no_roots;
             }
         }
         else {
             roots[0] = -c/b;
-            return 2;
+            Code = linear_one_root;
         }
     }
     else {
         double const discriminant = b*b - 4*a*c;
         if (discriminant < -eps) {
-            return 3;
+            Code = quadratic_no_roots;
         }
         else if (fabs(discriminant) <= eps) {
             roots[0] = -b/2/a;
-            return 4;
+            Code = quadratic_one_root;
         }
         else {
             roots[0] = (-b + sqrt(discriminant))/2/a; roots[1] = (-b -sqrt(discriminant))/2/a;
-            return 5;
+            Code = quadratic_two_roots;
         }
     }
+    return Code;
 }
 
 int main(void) {
