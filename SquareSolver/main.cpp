@@ -26,9 +26,10 @@ void push(rootList *rL, double pushRoot) {
     }
 }
 
-double get(rootList *rL) {
-    rL->count--;
-    return rL->roots[rL->count];
+void get(rootList *rL) {
+    for (int i = 0; i < rL->count; i++) {
+        printf("%lf\t", rL->roots[i]);
+    }
 }
 /*/ End of rootList struct /*/
 
@@ -45,11 +46,12 @@ void printRoots(solveCode code, rootList rL) {
     switch (code) {
         case LINEAR_INF_ROOTS: printf("Infinitely many solutions"); break;
         case LINEAR_NO_ROOTS: printf("No solutions"); break;
-        case LINEAR_ONE_ROOT: printf("It is linear (non-quadratic) equation\n[0] Solution: x = %lf", get(&rL)); break;
+        case LINEAR_ONE_ROOT: printf("It is linear (non-quadratic) equation\nSolutions: "); break;
         case QUADRATIC_NO_ROOTS: printf("D < 0: no real solutions"); break;
-        case QUADRATIC_ONE_ROOT: printf("D = 0\n[0] Solution: x = %lf", get(&rL)); break;
-        case QUADRATIC_TWO_ROOTS: printf("D > 0\n[0] Solution: x = %lf\n[1] Solution: x = %lf", get(&rL), get(&rL)); break;
+        case QUADRATIC_ONE_ROOT: printf("D = 0\nSolutions: "); break;
+        case QUADRATIC_TWO_ROOTS: printf("D > 0\nSolutions: "); break;
     }
+    get(&rL);
 }
 
 solveCode Code;
