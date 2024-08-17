@@ -31,26 +31,25 @@ bool pushRoot(rootList *rL, double Root) {
     switch (rL->status) {
         case LINEAR_INF_ROOTS:
         case LINEAR_NO_ROOTS:
-        case QUADRATIC_NO_ROOTS: {} break;
-        case LINEAR_ONE_ROOT: {
+        case QUADRATIC_NO_ROOTS:
+        break;
+        case LINEAR_ONE_ROOT:
             if (rL->count < 1) {
                 rL->roots[rL->count] = Root;
                 rL->count++;
-                return {}; // OK
-            }
-        } break;
-        case QUADRATIC_ONE_ROOT: {
+                return true;
+            } break;
+        case QUADRATIC_ONE_ROOT:
             if (rL->count < 1) {
                 rL->roots[rL->count] = Root;
                 rL->count++;
-                return {}; // OK
-            }
-        } break;
+                return true;
+            } break;
         case QUADRATIC_TWO_ROOTS:
             if (rL->count < 2) {
                 rL->roots[rL->count] = Root;
                 rL->count++;
-                return {}; // OK
+                return true;
             }
         }
     return false;
