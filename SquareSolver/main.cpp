@@ -65,9 +65,10 @@ void printRoot(rootList *rL) {
 
 void printResult(rootList *rL) {
     switch (rL->status) {
-        case LINEAR_INF_ROOTS: printf("Infinitely many solutions"); break;
+        case LINEAR_INF_ROOTS:printf("Infinitely many solutions"); break;
         case LINEAR_NO_ROOTS: printf("No solutions"); break;
-        case LINEAR_ONE_ROOT: printf("It is linear (non-quadratic) equation\nSolutions: "); break;
+        case LINEAR_ONE_ROOT: printf("It is linear (non-quadratic) "
+                                     "equation\nSolutions: "); break;
         case QUADRATIC_NO_ROOTS: printf("D < 0: No real solutions"); break;
         case QUADRATIC_ONE_ROOT: printf("D = 0\nSolutions: "); break;
         case QUADRATIC_TWO_ROOTS: printf("D > 0\nSolutions: "); break;
@@ -90,7 +91,8 @@ void linearSolver(double const b, double const c, rootList *rL) {
     }
 }
 
-void squareSolver(double const a, double const b, double const c, rootList *rL) {
+void squareSolver(double const a, double const b,
+                  double const c, rootList *rL) {
     double const discriminant = b*b - 4*a*c;
     if (discriminant < -EPS) {
         rL->status = QUADRATIC_NO_ROOTS;
@@ -106,7 +108,8 @@ void squareSolver(double const a, double const b, double const c, rootList *rL) 
     }
 }
 
-void Solve(double const a, double const b, double const c, rootList *rL) {
+void Solve(double const a, double const b,
+           double const c, rootList *rL) {
     if (fabs(a) <= EPS) {
         linearSolver(b, c, rL);
     }
@@ -118,10 +121,13 @@ void Solve(double const a, double const b, double const c, rootList *rL) {
 int main() {
     rootList rL;
     rootListInitialize(&rL);
+
     double a = NAN, b = NAN, c = NAN;
     printf("Input values of a, b, c coefficients:");
     scanf("%lf %lf %lf", &a, &b, &c);
+
     Solve(a, b, c, &rL);
+
     printResult(&rL);
     return 0;
 }
