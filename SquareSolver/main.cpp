@@ -64,7 +64,7 @@ void printRoot(rootList *rL) {
 
 void printResult(rootList *rL) {
     switch (rL->status) {
-        case LINEAR_INF_ROOTS:printf("Infinitely many solutions"); break;
+        case LINEAR_INF_ROOTS: printf("Infinitely many solutions"); break;
         case LINEAR_NO_ROOTS: printf("No solutions"); break;
         case LINEAR_ONE_ROOT: printf("It is linear (non-quadratic) "
                                      "equation\nSolutions: "); break;
