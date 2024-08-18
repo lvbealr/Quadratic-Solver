@@ -40,23 +40,28 @@ void rootListDestruct(rootList *rL) {
 int getRootCount(rootList *rL) {
     switch (rL->status) {
         case LINEAR_ONE_ROOT:
-        case QUADRATIC_ONE_ROOT: return 1;
-        case QUADRATIC_TWO_ROOTS: return 2;
+        case QUADRATIC_ONE_ROOT:
+            return 1;
+        case QUADRATIC_TWO_ROOTS:
+            return 2;
         case LINEAR_NO_ROOTS:
         case QUADRATIC_NO_ROOTS:
         case LINEAR_INF_ROOTS:
         case INVALID:
-        default: return 0;
+        default:
+            return 0;
     }
 }
 
 bool pushRoot(rootList *rL, double Root) {
-    if ((0 <= rL->count) && (rL->count < getRootCount(rL))) {
+    if ((rL->count < 0) && (rL->count >= getRootCount(rL))) {
+        return false;
+    }
+    else {
         rL->roots[rL->count] = Root;
         rL->count++;
         return true;
     }
-    return false;
 }
 
 void printRoot(rootList *rL) {
@@ -66,8 +71,8 @@ void printRoot(rootList *rL) {
     }
 }
 
-void setStatus(rootList *rL, solveCode Status) {
-    rL->status = Status;
+void setStatus(rootList *rL, solveCode status) {
+    rL->status = status;
 }
 /*/ End of rootList struct /*/
 
