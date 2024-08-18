@@ -30,10 +30,10 @@ void rootListInitialize(rootList *rL) {
 }
 
 void rootListDestruct(rootList *rL) {
+    int count = MAX_COUNT;
     for (int i = 0; i < MAX_COUNT; i++) {
         rL->roots[i] = NAN;
     }
-    int count = MAX_COUNT + 1;
     rL->status = INVALID;
 }
 
