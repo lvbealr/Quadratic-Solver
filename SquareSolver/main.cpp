@@ -22,7 +22,7 @@ struct rootList {
 };
 
 void rootListInitialize(rootList *rL) {
-    int count = 0;
+    rL->count = 0;
     for (int i = 0; i < MAX_COUNT; i++) {
         rL->roots[i] = NAN;
     }
@@ -30,7 +30,7 @@ void rootListInitialize(rootList *rL) {
 }
 
 void rootListDestruct(rootList *rL) {
-    int count = MAX_COUNT;
+    rL->count = MAX_COUNT;
     for (int i = 0; i < MAX_COUNT; i++) {
         rL->roots[i] = NAN;
     }
