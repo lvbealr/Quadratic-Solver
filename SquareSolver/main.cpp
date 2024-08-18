@@ -21,24 +21,24 @@ struct rootList {
     solveCode status = INVALID;
 };
 
-void rootListInitialize(rootList *rL) {
-    rL->count = 0;
+void rootListInitialize(rootList *roots) {
+    roots->count = 0;
     for (int i = 0; i < MAX_COUNT; i++) {
-        rL->roots[i] = NAN;
+        roots->roots[i] = NAN;
     }
-    rL->status = INVALID;
+    roots->status = INVALID;
 }
 
-void rootListDestruct(rootList *rL) {
-    rL->count = MAX_COUNT;
+void rootListDestruct(rootList *roots) {
+    roots->count = MAX_COUNT;
     for (int i = 0; i < MAX_COUNT; i++) {
-        rL->roots[i] = NAN;
+        roots->roots[i] = NAN;
     }
-    rL->status = INVALID;
+    roots->status = INVALID;
 }
 
-int getRootCount(rootList *rL) {
-    switch (rL->status) {
+int getRootCount(rootList *roots) {
+    switch (roots->status) {
         case LINEAR_ONE_ROOT:
         case QUADRATIC_ONE_ROOT:
             return 1;
@@ -53,29 +53,29 @@ int getRootCount(rootList *rL) {
     }
 }
 
-bool pushRoot(rootList *rL, double Root) {
-    if ((rL->count < 0) && (rL->count >= getRootCount(rL))) {
+bool pushRoot(rootList *roots, double Root) {
+    if ((roots->count < 0) && (roots->count >= getRootCount(roots))) {
         return false;
     }
-    rL->roots[rL->count] = Root;
-    rL->count++;
+    roots->roots[roots->count] = Root;
+    roots->count++;
     return true;
 }
 
-void printRoot(rootList *rL) {
-    int rootCount = getRootCount(rL);
+void printRoot(rootList *roots) {
+    int rootCount = getRootCount(roots);
     for (int i = 0; i < rootCount; i++) {
-        printf("%lf\t", rL->roots[i]);
+        printf("%lf\t", roots->roots[i]);
     }
 }
 
-void setStatus(rootList *rL, solveCode status) {
-    rL->status = status;
+void setStatus(rootList *roots, solveCode status) {
+    roots->status = status;
 }
 /*/ End of rootList struct /*/
 
-void printResult(rootList *rL) {
-    switch (rL->status) {
+void printResult(rootList *roots) {
+    switch (roots->status) {
         case LINEAR_INF_ROOTS: printf("Infinitely many solutions"); break;
         case LINEAR_NO_ROOTS: printf("No solutions"); break;
         case LINEAR_ONE_ROOT: printf("It is linear (non-quadratic) "
@@ -87,57 +87,57 @@ void printResult(rootList *rL) {
         default:
         break;
     }
-    printRoot(rL);
+    printRoot(roots);
     printf("\n");
 }
 
-void linearSolver(double const b, double const c, rootList *rL) {
+void linearSolver(double const b, double const c, rootList *roots) {
     if (fabs(b) <= EPS) {
         if (fabs(c) <= EPS) {
-            setStatus(rL, LINEAR_INF_ROOTS);
+            setStatus(roots, LINEAR_INF_ROOTS);
         }
         else {
-            setStatus(rL, LINEAR_NO_ROOTS);
+            setStatus(roots, LINEAR_NO_ROOTS);
         }
     }
     else {
-        setStatus(rL, LINEAR_ONE_ROOT);
-        pushRoot(rL, -c/b);
+        setStatus(roots, LINEAR_ONE_ROOT);
+        pushRoot(roots, -c/b);
     }
 }
 
 void squareSolver(double const a, double const b,
-                  double const c, rootList *rL) {
+                  double const c, rootList *roots) {
     double const discriminant = b*b - 4*a*c;
     if (discriminant < -EPS) {
-        setStatus(rL, QUADRATIC_NO_ROOTS);
+        setStatus(roots, QUADRATIC_NO_ROOTS);
     }
     else if (fabs(discriminant) <= EPS) {
-        setStatus(rL, QUADRATIC_ONE_ROOT);
-        pushRoot(rL, -b/2/a);
+        setStatus(roots, QUADRATIC_ONE_ROOT);
+        pushRoot(roots, -b/2/a);
     }
     else {
-        setStatus(rL, QUADRATIC_TWO_ROOTS);
+        setStatus(roots, QUADRATIC_TWO_ROOTS);
         double p = -b/2/a;
         double q = sqrt(discriminant)/2/a;
-        pushRoot(rL, (p+q));
-        pushRoot(rL, (p-q));
+        pushRoot(roots, (p+q));
+        pushRoot(roots, (p-q));
     }
 }
 
 void Solve(double const a, double const b,
-           double const c, rootList *rL) {
+           double const c, rootList *roots) {
     if (fabs(a) <= EPS) {
-        linearSolver(b, c, rL);
+        linearSolver(b, c, roots);
     }
     else {
-        squareSolver(a, b, c, rL);
+        squareSolver(a, b, c, roots);
     }
 }
 
 int main() {
-    rootList rL;
-    rootListInitialize(&rL);
+    rootList roots;
+    rootListInitialize(&roots);
 
     double a = NAN, b = NAN, c = NAN;
     printf("Input values of a, b, c coefficients:");
@@ -146,10 +146,10 @@ int main() {
         return -1;
     }
 
-    Solve(a, b, c, &rL);
+    Solve(a, b, c, &roots);
 
-    printResult(&rL);
+    printResult(&roots);
 
-    rootListDestruct(&rL);
+    rootListDestruct(&roots);
     return 0;
 }
