@@ -11,66 +11,58 @@ enum solveCode {
     QUADRATIC_NO_ROOTS = 3, // D < 0
     QUADRATIC_ONE_ROOT = 4, // D = 0
     QUADRATIC_TWO_ROOTS = 5, // D > 0
-    DEFAULT = 6
+    INVALID = 6
 };
 
 /*/ Start of rootList Struct /*/
 struct rootList {
-    int count = 0;
     double roots[MAX_COUNT] = {};
-    solveCode status = DEFAULT;
+    solveCode status = INVALID;
 };
 
 void rootListInitialize(rootList *rL) {
     for (int i = 0; i < MAX_COUNT; i++) {
         rL->roots[i] = NAN;
     }
-    rL->count = 0;
-    rL->status = DEFAULT;
+    rL->status = INVALID;
 }
 
 void rootListDestruct(rootList *rL) {
     for (int i = 0; i < MAX_COUNT; i++) {
         rL->roots[i] = NAN;
     }
-    rL->count = MAX_COUNT + 1;
-    rL->status = DEFAULT;
+    rL->status = INVALID;
+}
+
+int getRootCount(rootList *rL) {
+    switch (rL->status) {
+        case LINEAR_ONE_ROOT:
+        case QUADRATIC_ONE_ROOT: return 1;
+        case QUADRATIC_TWO_ROOTS: return 2;
+        case LINEAR_NO_ROOTS:
+        case QUADRATIC_NO_ROOTS:
+        case LINEAR_INF_ROOTS:
+        case INVALID:
+        default: return 0;
+    }
 }
 
 bool pushRoot(rootList *rL, double Root) {
-    switch (rL->status) {
-        case LINEAR_ONE_ROOT:
-            if (rL->count < 1) {
-                rL->roots[rL->count] = Root;
-                rL->count++;
-                return true;
-            } break;
-        case QUADRATIC_ONE_ROOT:
-            if (rL->count < 1) {
-                rL->roots[rL->count] = Root;
-                rL->count++;
-                return true;
-            } break;
-        case QUADRATIC_TWO_ROOTS:
-            if (rL->count < 2) {
-                rL->roots[rL->count] = Root;
-                rL->count++;
-                return true;
-            }
-        case LINEAR_INF_ROOTS:
-        case LINEAR_NO_ROOTS:
-        case QUADRATIC_NO_ROOTS:
-        case DEFAULT:
-        break;
-        }
-    return false;
+    static int count = getRootCount(rL);
+    if (count - 1 >= 0) {
+        rL->roots[count-1] = Root;
+        count--;
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 void printRoot(rootList *rL) {
-    int i = 0;
-    while (i < rL->count && rL->count <= MAX_COUNT) {
+    int count = getRootCount(rL);
+    for (int i = 0; i < count; i++) {
         printf("%lf\t", rL->roots[i]);
-        i++;
     }
 }
 
@@ -88,7 +80,9 @@ void printResult(rootList *rL) {
         case QUADRATIC_NO_ROOTS: printf("D < 0: No real solutions"); break;
         case QUADRATIC_ONE_ROOT: printf("D = 0\nSolutions: "); break;
         case QUADRATIC_TWO_ROOTS: printf("D > 0\nSolutions: "); break;
-        case DEFAULT: break;
+        case INVALID:
+        default:
+        break;
     }
     printRoot(rL);
     printf("\n");
