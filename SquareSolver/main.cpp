@@ -16,11 +16,13 @@ enum solveCode {
 
 /*/ Start of rootList Struct /*/
 struct rootList {
+    int count = 0;
     double roots[MAX_COUNT] = {};
     solveCode status = INVALID;
 };
 
 void rootListInitialize(rootList *rL) {
+    int count = 0;
     for (int i = 0; i < MAX_COUNT; i++) {
         rL->roots[i] = NAN;
     }
@@ -31,6 +33,7 @@ void rootListDestruct(rootList *rL) {
     for (int i = 0; i < MAX_COUNT; i++) {
         rL->roots[i] = NAN;
     }
+    int count = MAX_COUNT + 1;
     rL->status = INVALID;
 }
 
@@ -48,15 +51,12 @@ int getRootCount(rootList *rL) {
 }
 
 bool pushRoot(rootList *rL, double Root) {
-    static int count = getRootCount(rL);
-    if (count - 1 >= 0) {
-        rL->roots[count-1] = Root;
-        count--;
+    if ((0 <= rL->count) && (rL->count < getRootCount(rL))) {
+        rL->roots[rL->count] = Root;
+        rL->count++;
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 void printRoot(rootList *rL) {
