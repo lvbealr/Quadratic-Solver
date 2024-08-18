@@ -141,7 +141,10 @@ int main() {
 
     double a = NAN, b = NAN, c = NAN;
     printf("Input values of a, b, c coefficients:");
-    scanf("%lf %lf %lf", &a, &b, &c);
+    if (scanf("%lf %lf %lf", &a, &b, &c) != 3) {
+        printf("Wrong input!");
+        return -1;
+    }
 
     Solve(a, b, c, &rL);
 
