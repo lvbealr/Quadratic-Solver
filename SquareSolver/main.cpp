@@ -57,11 +57,9 @@ bool pushRoot(rootList *rL, double Root) {
     if ((rL->count < 0) && (rL->count >= getRootCount(rL))) {
         return false;
     }
-    else {
-        rL->roots[rL->count] = Root;
-        rL->count++;
-        return true;
-    }
+    rL->roots[rL->count] = Root;
+    rL->count++;
+    return true;
 }
 
 void printRoot(rootList *rL) {
