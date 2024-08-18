@@ -53,11 +53,11 @@ int getRootCount(rootList *roots) {
     }
 }
 
-bool pushRoot(rootList *roots, double Root) {
+bool pushRoot(rootList *roots, double root) {
     if ((roots->count < 0) && (roots->count >= getRootCount(roots))) {
         return false;
     }
-    roots->roots[roots->count] = Root;
+    roots->roots[roots->count] = root;
     roots->count++;
     return true;
 }
