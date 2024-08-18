@@ -60,8 +60,8 @@ bool pushRoot(rootList *rL, double Root) {
 }
 
 void printRoot(rootList *rL) {
-    int count = getRootCount(rL);
-    for (int i = 0; i < count; i++) {
+    int cnt = getRootCount(rL);
+    for (int i = 0; i < cnt; i++) {
         printf("%lf\t", rL->roots[i]);
     }
 }
