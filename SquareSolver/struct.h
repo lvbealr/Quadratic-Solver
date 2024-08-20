@@ -2,8 +2,8 @@
 #include <cmath>
 #include "solveCode.h"
 
-#ifndef rootListStruct // TODO
-#define rootListStruct
+#ifndef ROOT_LIST_STRUCT_H_
+#define ROOT_LIST_STRUCT_H_
 
 const int MAX_COUNT = 2;
 
@@ -66,4 +66,4 @@ void setStatus(rootList *roots, solveCode status) {
     roots->status = status;
 }
 
-#endif // rootListStruct
+#endif // ROOT_LIST_STRUCT_H_
