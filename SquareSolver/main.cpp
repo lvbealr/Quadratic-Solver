@@ -135,7 +135,7 @@ void squareSolver(double const a, double const b,
 }
 
 void Solve(double const a, double const b,
-           double const c, rootList *roots) { // TODO assert
+           double const c, rootList *roots) {
 
     assert(isfinite(a));
     assert(isfinite(b));
@@ -159,10 +159,10 @@ bool coefficientInput(char coefficientName, double *coefficient) {
         }
         else {
             *coefficient = atof(coefficient_str);
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 
 int main() {
