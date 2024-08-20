@@ -2,7 +2,7 @@
 #include <cassert>
 #include <math.h>
 
-const double EPS = 1e-07;
+const double EPS = 1e-06;
 const int MAX_COUNT = 2;
 
 enum solveCode {
@@ -20,6 +20,25 @@ enum nullComparisonCode {
     DOUBLE1_EQUAL_EPS   = 1, // |x| <= EPS
     DOUBLE1_GREATER_EPS = 2, // x > EPS
 };
+
+/*/ START COEFFICIENTS INPUT /*/
+bool coefficientInput(char coefficientName, double *coefficient) {
+    char coefficient_str[100] = "";
+    for (int iter = 0; iter < 3; iter++) {
+        printf("Input valid value of coefficient %c:", coefficientName);
+        gets(coefficient_str);
+        if ((coefficient_str[0] < '0') || (coefficient_str[0] > '9')) {
+            continue;
+        }
+        else {
+            *coefficient = atof(coefficient_str);
+            return true;
+        }
+    }
+    return false;
+}
+/*/ END COEFFICIENTS INPUT /*/
+
 
 /*/ START DOUBLE COMPARISON/*/
 nullComparisonCode nullComparison(double x, double y) {
@@ -135,7 +154,6 @@ void linearSolver(double const b, double const c, rootList *roots) {
 void squareSolver(double const a, double const b,
                   double const c, rootList *roots) {
     double const discriminant = b*b - 4*a*c;
-
     nullComparisonCode comparisonCode = nullComparison(discriminant, EPS);
     switch (comparisonCode) {
         case DOUBLE1_LESS_EPS: setStatus(roots, QUADRATIC_NO_ROOTS);
@@ -161,8 +179,8 @@ void Solve(double const a, double const b,
     assert(isfinite(a));
     assert(isfinite(b));
     assert(isfinite(c));
-
-    if (nullComparison(a, EPS) == DOUBLE1_EQUAL_EPS && isfinite(a)) { // TODO What if a == NAN or a == INF
+    printf("%d %d\n", nullComparison(a, EPS), a);
+    if (nullComparison(a, EPS) == DOUBLE1_EQUAL_EPS) { // TODO What if a == NAN or a == INF
         linearSolver(b, c, roots);
     }
     else {
@@ -175,13 +193,23 @@ int main() {
     rootListInitialize(&roots);
 
     double a = NAN, b = NAN, c = NAN;
-    printf("Input values of a, b, c coefficients:"); // TODO multiple tries
-    if (scanf("%lf %lf %lf", &a, &b, &c) != 3) {
-        printf("Wrong input!");
-        return -1;
+//    printf("Input values of a, b, c coefficients:"); // TODO multiple tries
+//    if (scanf("%lf %lf %lf", &a, &b, &c) != 3) {
+//        printf("Wrong input!");
+//        return -1;
+//    }
+    bool flag = false;
+    if (coefficientInput('a', &a)) {
+        if (coefficientInput('b', &b)) {
+            if (coefficientInput('c', &c))
+                flag = true;
+        }
     }
+    printf("%d\n", nullComparison(b*b-4*a*c, EPS));
+    if (flag) Solve(a, b, c, &roots);
+    else return -1;
 
-    Solve(a, b, c, &roots);
+//    Solve(a, b, c, &roots);
 
     printResult(&roots);
 
