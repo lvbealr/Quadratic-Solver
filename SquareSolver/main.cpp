@@ -2,7 +2,7 @@
 #include <cassert>
 #include <math.h>
 
-const double EPS = 1e-06;
+const double EPS = 1e-07;
 const int MAX_COUNT = 2;
 
 enum solveCode {
@@ -15,44 +15,6 @@ enum solveCode {
     INVALID             = 6
 };
 
-enum nullComparisonCode {
-    DOUBLE1_LESS_EPS    = 0, // x < -EPS
-    DOUBLE1_EQUAL_EPS   = 1, // |x| <= EPS
-    DOUBLE1_GREATER_EPS = 2, // x > EPS
-};
-
-/*/ START COEFFICIENTS INPUT /*/
-bool coefficientInput(char coefficientName, double *coefficient) {
-    char coefficient_str[100] = "";
-    for (int iter = 0; iter < 3; iter++) {
-        printf("Input valid value of coefficient %c:", coefficientName);
-        gets(coefficient_str);
-        if ((coefficient_str[0] < '0') || (coefficient_str[0] > '9')) {
-            continue;
-        }
-        else {
-            *coefficient = atof(coefficient_str);
-            return true;
-        }
-    }
-    return false;
-}
-/*/ END COEFFICIENTS INPUT /*/
-
-
-/*/ START DOUBLE COMPARISON/*/
-nullComparisonCode nullComparison(double x, double y) {
-    if (x < -y)
-        return DOUBLE1_LESS_EPS;
-    else if (fabs(x) <= y)
-        return DOUBLE1_EQUAL_EPS;
-    else
-        return DOUBLE1_GREATER_EPS;
-}
-/*/ END DOUBLE COMPARISON /*/
-
-
-/*/ START ROOT LIST STRUCT /*/
 struct rootList {
     int count = 0;
     double roots[MAX_COUNT] = {};
@@ -111,7 +73,6 @@ void printRoot(const rootList *roots) {
 void setStatus(rootList *roots, solveCode status) {
     roots->status = status;
 }
-/*/ END ROOT LIST STRUCT /*/
 
 void printResult(rootList *roots) {
     switch (roots->status) {
@@ -130,15 +91,15 @@ void printResult(rootList *roots) {
             printf("D > 0\nSolutions: "); break;
         case INVALID:
         default:
-        break;
+            break;
     }
     printRoot(roots);
     printf("\n");
 }
 
 void linearSolver(double const b, double const c, rootList *roots) {
-    if (nullComparison(b, EPS) == DOUBLE1_EQUAL_EPS) {
-        if (nullComparison(c, EPS) == DOUBLE1_EQUAL_EPS) {
+    if (fabs(b) <= EPS) {
+        if (fabs(c) <= EPS) {
             setStatus(roots, LINEAR_INF_ROOTS);
         }
         else {
@@ -154,33 +115,33 @@ void linearSolver(double const b, double const c, rootList *roots) {
 void squareSolver(double const a, double const b,
                   double const c, rootList *roots) {
     double const discriminant = b*b - 4*a*c;
-    nullComparisonCode comparisonCode = nullComparison(discriminant, EPS);
-    switch (comparisonCode) {
-        case DOUBLE1_LESS_EPS: setStatus(roots, QUADRATIC_NO_ROOTS);
-        case DOUBLE1_EQUAL_EPS: {
-            setStatus(roots, QUADRATIC_ONE_ROOT);
-            pushRoot(roots, -b/2/a);
-        }
-        case DOUBLE1_GREATER_EPS: {
-            setStatus(roots, QUADRATIC_TWO_ROOTS);
 
-            double p = -b/2/a;
-            double q = sqrt(discriminant)/2/a;
+    if (discriminant < -EPS) {
+        setStatus(roots, QUADRATIC_NO_ROOTS);
+    }
+    else if (fabs(discriminant) <= EPS) {
+        setStatus(roots, QUADRATIC_ONE_ROOT);
+        pushRoot(roots, -b/2/a);
+    }
+    else {
+        setStatus(roots, QUADRATIC_TWO_ROOTS);
 
-            pushRoot(roots, (p+q));
-            pushRoot(roots, (p-q));
-        }
+        double p = -b/2/a;
+        double q = sqrt(discriminant)/2/a;
+
+        pushRoot(roots, (p+q));
+        pushRoot(roots, (p-q));
     }
 }
 
 void Solve(double const a, double const b,
-           double const c, rootList *roots) {
+           double const c, rootList *roots) { // TODO assert
 
     assert(isfinite(a));
     assert(isfinite(b));
     assert(isfinite(c));
-    printf("%d %d\n", nullComparison(a, EPS), a);
-    if (nullComparison(a, EPS) == DOUBLE1_EQUAL_EPS) { // TODO What if a == NAN or a == INF
+    // TODO think about double comparison
+    if (fabs(a) <= EPS) { // TODO What if a == NAN or a == INF
         linearSolver(b, c, roots);
     }
     else {
@@ -188,16 +149,27 @@ void Solve(double const a, double const b,
     }
 }
 
+bool coefficientInput(char coefficientName, double *coefficient) {
+    char coefficient_str[100] = "";
+    for (int iter = 0; iter < 3; iter++) {
+        printf("Input valid value of coefficient %c:", coefficientName);
+        gets(coefficient_str);
+        if ((coefficient_str[0] < '0') || (coefficient_str[0] > '9')) {
+            continue;
+        }
+        else {
+            *coefficient = atof(coefficient_str);
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int main() {
     rootList roots;
     rootListInitialize(&roots);
 
     double a = NAN, b = NAN, c = NAN;
-//    printf("Input values of a, b, c coefficients:"); // TODO multiple tries
-//    if (scanf("%lf %lf %lf", &a, &b, &c) != 3) {
-//        printf("Wrong input!");
-//        return -1;
-//    }
     bool flag = false;
     if (coefficientInput('a', &a)) {
         if (coefficientInput('b', &b)) {
@@ -205,11 +177,9 @@ int main() {
                 flag = true;
         }
     }
-    printf("%d\n", nullComparison(b*b-4*a*c, EPS));
+
     if (flag) Solve(a, b, c, &roots);
     else return -1;
-
-//    Solve(a, b, c, &roots);
 
     printResult(&roots);
 
