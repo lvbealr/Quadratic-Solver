@@ -15,17 +15,20 @@ enum solveCode {
     INVALID             = 6
 };
 
-enum doubleComparisonCode {
-    DOUBLE1_LESS_DOUBLE2 = 0, // x < -y
-    DOUBLE1_EQUAL_DOUBLE2 = 1, // |x| <= y
-    DOUBLE1_GREATER_DOUBLE2 = 2, // x > y
+enum nullComparisonCode {
+    DOUBLE1_LESS_EPS    = 0, // x < -EPS
+    DOUBLE1_EQUAL_EPS   = 1, // |x| <= EPS
+    DOUBLE1_GREATER_EPS = 2, // x > EPS
 };
 
 /*/ START DOUBLE COMPARISON/*/
-doubleComparisonCode doubleComparison(double x, double y) {
-    if (x < -y) return DOUBLE1_LESS_DOUBLE2;
-    else if (fabs(x) <= y) return DOUBLE1_EQUAL_DOUBLE2;
-    else return DOUBLE1_GREATER_DOUBLE2;
+nullComparisonCode nullComparison(double x, double y) {
+    if (x < -y)
+        return DOUBLE1_LESS_EPS;
+    else if (fabs(x) <= y)
+        return DOUBLE1_EQUAL_EPS;
+    else
+        return DOUBLE1_GREATER_EPS;
 }
 /*/ END DOUBLE COMPARISON /*/
 
@@ -115,8 +118,8 @@ void printResult(rootList *roots) {
 }
 
 void linearSolver(double const b, double const c, rootList *roots) {
-    if (doubleComparison(b, EPS) == DOUBLE1_EQUAL_DOUBLE2) {
-        if (doubleComparison(c, EPS) == DOUBLE1_EQUAL_DOUBLE2) {
+    if (nullComparison(b, EPS) == DOUBLE1_EQUAL_EPS) {
+        if (nullComparison(c, EPS) == DOUBLE1_EQUAL_EPS) {
             setStatus(roots, LINEAR_INF_ROOTS);
         }
         else {
@@ -132,15 +135,15 @@ void linearSolver(double const b, double const c, rootList *roots) {
 void squareSolver(double const a, double const b,
                   double const c, rootList *roots) {
     double const discriminant = b*b - 4*a*c;
-    
-    doubleComparisonCode comparisonCode = doubleComparison(discriminant, EPS);
+
+    nullComparisonCode comparisonCode = nullComparison(discriminant, EPS);
     switch (comparisonCode) {
-        case DOUBLE1_LESS_DOUBLE2: setStatus(roots, QUADRATIC_NO_ROOTS);
-        case DOUBLE1_EQUAL_DOUBLE2: {
+        case DOUBLE1_LESS_EPS: setStatus(roots, QUADRATIC_NO_ROOTS);
+        case DOUBLE1_EQUAL_EPS: {
             setStatus(roots, QUADRATIC_ONE_ROOT);
             pushRoot(roots, -b/2/a);
         }
-        case DOUBLE1_GREATER_DOUBLE2: {
+        case DOUBLE1_GREATER_EPS: {
             setStatus(roots, QUADRATIC_TWO_ROOTS);
 
             double p = -b/2/a;
@@ -158,8 +161,8 @@ void Solve(double const a, double const b,
     assert(isfinite(a));
     assert(isfinite(b));
     assert(isfinite(c));
-                              // TODO think about double comparison
-    if (fabs(a) <= EPS) { // TODO What if a == NAN or a == INF
+
+    if (nullComparison(a, EPS) == DOUBLE1_EQUAL_EPS && isfinite(a)) { // TODO What if a == NAN or a == INF
         linearSolver(b, c, roots);
     }
     else {
