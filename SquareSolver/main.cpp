@@ -5,6 +5,12 @@
 const double EPS = 1e-07;
 const int MAX_COUNT = 2;
 
+enum nullComparisonCode {
+    DOUBLE_LESS_EPS     = 0, // x < -EPS
+    DOUBLE_EQUAL_EPS    = 1, // |x| <= EPS
+    DOUBLE_GREATER_EPS  = 2, // x > EPS
+};
+
 enum solveCode {
     LINEAR_INF_ROOTS    = 0, // a, b, c = 0
     LINEAR_NO_ROOTS     = 1, // a, b = 0; c != 0
@@ -15,6 +21,7 @@ enum solveCode {
     INVALID             = 6
 };
 
+/*/ START OF ROOTLIST STRUCT /*/
 struct rootList {
     int count = 0;
     double roots[MAX_COUNT] = {};
@@ -96,10 +103,19 @@ void printResult(rootList *roots) {
     printRoot(roots);
     printf("\n");
 }
+/*/ END OF ROOTLIST STRUCT /*/
+
+/*/ START OF NULLCOMPARISON FUNCTION /*/
+nullComparisonCode nullComparison(double x) {
+    if (x < -EPS) return DOUBLE_LESS_EPS;
+    else if (fabs(x) <= EPS) return DOUBLE_EQUAL_EPS;
+    else return DOUBLE_GREATER_EPS;
+}
+/*/ END OF NULLCOMPARISON FUNCTION /*/
 
 void linearSolver(double const b, double const c, rootList *roots) {
-    if (fabs(b) <= EPS) {
-        if (fabs(c) <= EPS) {
+    if (nullComparison(b) == DOUBLE_EQUAL_EPS) {
+        if (nullComparison(c) == DOUBLE_EQUAL_EPS) {
             setStatus(roots, LINEAR_INF_ROOTS);
         }
         else {
@@ -116,21 +132,24 @@ void squareSolver(double const a, double const b,
                   double const c, rootList *roots) {
     double const discriminant = b*b - 4*a*c;
 
-    if (discriminant < -EPS) {
-        setStatus(roots, QUADRATIC_NO_ROOTS);
-    }
-    else if (fabs(discriminant) <= EPS) {
-        setStatus(roots, QUADRATIC_ONE_ROOT);
-        pushRoot(roots, -b/2/a);
-    }
-    else {
-        setStatus(roots, QUADRATIC_TWO_ROOTS);
+    nullComparisonCode code = nullComparison(discriminant);
+    switch (code) {
+        case DOUBLE_LESS_EPS:
+            setStatus(roots, QUADRATIC_NO_ROOTS);
+            break;
+        case DOUBLE_EQUAL_EPS:
+            setStatus(roots, QUADRATIC_ONE_ROOT);
+            pushRoot(roots, -b/2/a);
+            break;
+        case DOUBLE_GREATER_EPS:
+            setStatus(roots, QUADRATIC_TWO_ROOTS);
 
-        double p = -b/2/a;
-        double q = sqrt(discriminant)/2/a;
+            double p = -b/2/a;
+            double q = sqrt(discriminant)/2/a;
 
-        pushRoot(roots, (p+q));
-        pushRoot(roots, (p-q));
+            pushRoot(roots, (p+q));
+            pushRoot(roots, (p-q));
+            break;
     }
 }
 
@@ -140,8 +159,8 @@ void Solve(double const a, double const b,
     assert(isfinite(a));
     assert(isfinite(b));
     assert(isfinite(c));
-    // TODO think about double comparison
-    if (fabs(a) <= EPS) { // TODO What if a == NAN or a == INF
+
+    if (nullComparison(a) == DOUBLE_EQUAL_EPS) {
         linearSolver(b, c, roots);
     }
     else {
@@ -151,9 +170,11 @@ void Solve(double const a, double const b,
 
 bool coefficientInput(char coefficientName, double *coefficient) {
     char coefficient_str[100] = "";
+
     for (int iter = 0; iter < 3; iter++) {
         printf("Input valid value of coefficient %c:", coefficientName);
         gets(coefficient_str);
+
         if ((coefficient_str[0] < '0') || (coefficient_str[0] > '9')) {
             continue;
         }
@@ -170,6 +191,7 @@ int main() {
     rootListInitialize(&roots);
 
     double a = NAN, b = NAN, c = NAN;
+
     bool flag = false;
     if (coefficientInput('a', &a)) {
         if (coefficientInput('b', &b)) {
