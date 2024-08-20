@@ -66,8 +66,9 @@ void squareSolver(double const a, double const b,
 }
 
 void Solve(double const a, double const b,
-           double const c, rootList *roots) {
-    if (fabs(a) <= EPS) {
+           double const c, rootList *roots) { // TODO assert
+                              // TODO think about ouble comparison
+    if (fabs(a) <= EPS) { // TODO What if a == NAN or a == INF
         linearSolver(b, c, roots);
     }
     else {
@@ -80,7 +81,7 @@ int main() {
     rootListInitialize(&roots);
 
     double a = NAN, b = NAN, c = NAN;
-    printf("Input values of a, b, c coefficients:");
+    printf("Input values of a, b, c coefficients:"); // TODO multiple tries
     if (scanf("%lf %lf %lf", &a, &b, &c) != 3) {
         printf("Wrong input!");
         return -1;

@@ -2,7 +2,7 @@
 #include <cmath>
 #include "additionalElements.h"
 
-#ifndef rootListStruct
+#ifndef rootListStruct // TODO
 #define rootListStruct
 
 struct rootList {
@@ -13,16 +13,16 @@ struct rootList {
 
 void rootListInitialize(rootList *roots) {
     roots->count = 0;
-    for (int i = 0; i < MAX_COUNT; i++) {
-        roots->roots[i] = NAN;
+    for (int index = 0; index < MAX_COUNT; index++) {
+        roots->roots[index] = NAN;
     }
     roots->status = INVALID;
 }
 
 void rootListDestruct(rootList *roots) {
     roots->count = -1;
-    for (int i = 0; i < MAX_COUNT; i++) {
-        roots->roots[i] = NAN;
+    for (int index = 0; index < MAX_COUNT; index++) {
+        roots->roots[index] = NAN;
     }
     roots->status = INVALID;
 }
@@ -55,8 +55,8 @@ bool pushRoot(rootList *roots, double root) {
 
 void printRoot(const rootList *roots) {
     int rootCount = getRootCount(roots);
-    for (int i = 0; i < rootCount; i++) {
-        printf("%lg\t", roots->roots[i]);
+    for (int index = 0; index < rootCount; index++) {
+        printf("%lg\t", roots->roots[index]);
     }
 }
 

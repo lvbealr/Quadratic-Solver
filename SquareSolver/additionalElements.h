@@ -1,9 +1,9 @@
-#ifndef additionalElements
-#define additionalElements
+#ifndef additionalElements // TODO rename file
+#define additionalElements // TODO  naming case: additionalElements -> ADDITIONAL_ELEMENTS_H_
 
 const int MAX_COUNT = 2;
 
-enum solveCode {
+enum solveCode { // TODO align = symbols
     LINEAR_INF_ROOTS = 0, // a, b, c = 0
     LINEAR_NO_ROOTS = 1, // a, b = 0; c != 0
     LINEAR_ONE_ROOT = 2, // a = 0; b != 0
