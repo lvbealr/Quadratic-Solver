@@ -1,5 +1,5 @@
 #include <cstdio>
-#include <cmath>
+#include <math.h>
 #include "solveCode.h"
 
 #ifndef ROOT_LIST_STRUCT_H_

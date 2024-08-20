@@ -1,5 +1,6 @@
 #include <cstdio>
-#include <cmath>
+#include <cassert>
+#include <math.h>
 #include "solveCode.h"
 #include "struct.h"
 
@@ -67,7 +68,11 @@ void squareSolver(double const a, double const b,
 
 void Solve(double const a, double const b,
            double const c, rootList *roots) { // TODO assert
-                              // TODO think about ouble comparison
+
+    assert(isfinite(a));
+    assert(isfinite(b));
+    assert(isfinite(c));
+                              // TODO think about double comparison
     if (fabs(a) <= EPS) { // TODO What if a == NAN or a == INF
         linearSolver(b, c, roots);
     }
