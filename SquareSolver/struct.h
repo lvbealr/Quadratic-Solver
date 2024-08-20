@@ -1,9 +1,11 @@
 #include <cstdio>
 #include <cmath>
-#include "additionalElements.h"
+#include "solveCode.h"
 
 #ifndef rootListStruct // TODO
 #define rootListStruct
+
+const int MAX_COUNT = 2;
 
 struct rootList {
     int count = 0;
