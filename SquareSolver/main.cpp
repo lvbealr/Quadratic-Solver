@@ -1,3 +1,10 @@
+/**
+ * \author lvbealr
+ * \bug no bugs
+ * \version 52.0
+ * \warning DeD edition
+ */
+
 #include <cstdio>
 #include <cassert>
 #include <math.h>
@@ -107,9 +114,12 @@ void printResult(rootList *roots) {
 
 /*/ START OF NULLCOMPARISON FUNCTION /*/
 nullComparisonCode nullComparison(double x) {
-    if (x < -EPS) return DOUBLE_LESS_EPS;
-    else if (fabs(x) <= EPS) return DOUBLE_EQUAL_EPS;
-    else return DOUBLE_GREATER_EPS;
+    if (x < -EPS)
+        return DOUBLE_LESS_EPS;
+    else if (fabs(x) <= EPS)
+        return DOUBLE_EQUAL_EPS;
+    else
+        return DOUBLE_GREATER_EPS;
 }
 /*/ END OF NULLCOMPARISON FUNCTION /*/
 
