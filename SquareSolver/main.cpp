@@ -1,9 +1,4 @@
-/**
- * \author lvbealr
- * \bug no bugs
- * \version 52.0
- * \warning DeD edition
- */
+// TODO COLOR MODULE !!!!!!!!!!!!!
 
 #include <cstdio>
 #include <cassert>
@@ -191,7 +186,7 @@ void squareSolver(double const a, double const b,
     }
 }
 
-void Solve(double const a, double const b,
+void solve(double const a, double const b,
            double const c, rootList *roots) {
 
     assert(roots != NULL);
@@ -215,10 +210,11 @@ bool inputCheck(char coefficient_str[100]) {
 bool coefficientInput(char coefficientName, double *coefficient) {
     const size_t INPUT_STRING_SIZE = 100;
     char coefficient_str[INPUT_STRING_SIZE] = "";
+    const int TRY_COUNT = 3;
 
-    for (int iter = 0; iter < 3; iter++) {
+    for (int tryNum = 0; tryNum < TRY_COUNT; tryNum++) {
         printf("Input valid value of coefficient %c:", coefficientName);
-        scanf("%100s", coefficient_str); // TODO КАК ВМЕСТО 100 ЗАПИСАТЬ КОНСТАНТУ?????????????????????
+        scanf("%100s", coefficient_str);
 
         if (inputCheck(coefficient_str)) {
             while (getchar() != '\n') {}
@@ -234,51 +230,35 @@ bool coefficientInput(char coefficientName, double *coefficient) {
 }
 
 /*/ START OF TESTS /*/
-testData tests[] = {
-        {0, 0, 0, NAN, NAN, NAN},                  // LINEAR_INF_ROOTS --- OK
-        {0, 0, 0, 1, 2, 2},                        // LINEAR_INF_ROOTS --- FAILED
-        {0, 0, 5, NAN, NAN, 0},                    // LINEAR_NO_ROOTS --- OK
-        {0, 0, 3, .6, NAN, 1},                     // LINEAR_NO_ROOTS --- FAILED
-        {0, -.6, 3, 5, NAN, 1},                    // LINEAR_ONE_ROOT --- OK
-        {0, 8, 3, -9, NAN, 1},                     // LINEAR_ONE_ROOT --- FAILED
-        {1, 2, 10, NAN, NAN, 0},                   // QUADRATIC_NO_ROOT --- OK
-        {2.5, 999, 2, 3, NAN, 1},                  // QUADRATIC_NO_ROOT --- FAILED
-        {1, -4, 4, 2, NAN, 1},                     // QUADRATIC_ONE_ROOT --- OK
-        {1, 2, 1, 1, NAN, 1},                      // QUADRATIC_ONE_ROOT --- FAILED
-        {2.5, 9.8, 3.4, -3.535309, -0.384691, 2}, // QUADRATIC_TWO_ROOTS --- OK
-        {3, 7.4, -2.37, -2.75, 0.286901, 2}       // QUADRATIC_TWO_ROOTS --- FAILED
-};
-
 void printTestError(int testNum, double a, double b, double c,
                     double trueX1, double trueX2, double trueRootCount,
                     double testX1, double testX2, double testRootCount) {
-    printf("\nTest %d: FAILED! a = %lg, b = %lg,c = %lg\nx1 = %lg, x2 = %lg, testRootCount = %lg\n"
-           "EXPECTED:\nx1 = %lg, x2 = %lg, rootCount = %lg\n",
-           testNum, a, b, c, trueX1, trueX2, trueRootCount,
-           testX1, testX2, testRootCount);
+    printf("\nTest %d: " "\033[1;31mFAILED! \033[0m"
+                         "a = %lg, b = %lg,c = %lg\nx1 = %lg, x2 = %lg, testRootCount = %lg\n"
+                         "EXPECTED:\nx1 = %lg, x2 = %lg, rootCount = %lg\n",
+                         testNum, a, b, c, trueX1, trueX2, trueRootCount,
+                         testX1, testX2, testRootCount);
 }
 
 void printTestSuccess(int testNum) {
-    printf("\nTest %d. OK!\n", testNum);
+    printf("\nTest %d: " "\033[1;32mOK!\033[0m\n", testNum);
 }
 
 bool testCondition (double x, double y) {
     return (zeroComparison(x - y) == DOUBLE_EQUAL_EPS) || (isnan(x) && isnan(y));
 }
 
-void runTest(testData test) {
-    static int testNum = 0;
-    testNum++;
+void runTest(testData test, int testNum) {
     double testX1 = NAN, testX2 = NAN;
     double testRootCount = NAN;
-    rootList testRootList;
+    rootList testRootList = {};
     rootListInitialize(&testRootList);
 
-    Solve(test.a, test.b, test.c, &testRootList);
+    solve(test.a, test.b, test.c, &testRootList);
 
     solveCode testStatus = testRootList.status;
 
-    switch (testStatus) {
+    switch (testStatus) { // TODO use your enum for rootsCount
         case LINEAR_INF_ROOTS:
             testRootCount = NAN;
             break;
@@ -313,8 +293,22 @@ void runTest(testData test) {
 }
 
 void runAllTests() {
+    static testData tests[] = {
+            {0, 0, 0, NAN, NAN, NAN},                  // LINEAR_INF_ROOTS --- OK
+            {0, 0, 0, 1, 2, 2},                        // LINEAR_INF_ROOTS --- FAILED
+            {0, 0, 5, NAN, NAN, 0},                    // LINEAR_NO_ROOTS --- OK
+            {0, 0, 3, .6, NAN, 1},                     // LINEAR_NO_ROOTS --- FAILED
+            {0, -.6, 3, 5, NAN, 1},                    // LINEAR_ONE_ROOT --- OK
+            {0, 8, 3, -9, NAN, 1},                     // LINEAR_ONE_ROOT --- FAILED
+            {1, 2, 10, NAN, NAN, 0},                   // QUADRATIC_NO_ROOT --- OK
+            {2.5, 999, 2, 3, NAN, 1},                  // QUADRATIC_NO_ROOT --- FAILED
+            {1, -4, 4, 2, NAN, 1},                     // QUADRATIC_ONE_ROOT --- OK
+            {1, 2, 1, 1, NAN, 1},                      // QUADRATIC_ONE_ROOT --- FAILED
+            {2.5, 9.8, 3.4, -3.535309, -0.384691, 2}, // QUADRATIC_TWO_ROOTS --- OK
+            {3, 7.4, -2.37, -2.75, 0.286901, 2}       // QUADRATIC_TWO_ROOTS --- FAILED
+    };
     for (int iter = 0; iter < 12; iter++) {
-        runTest(tests[iter]);
+        runTest(tests[iter], iter + 1);
     }
 }
 /*/ END OF TESTS /*/
@@ -336,7 +330,7 @@ int manualMode() {
     }
 
     if (flag) {
-        Solve(a, b, c, &roots);
+        solve(a, b, c, &roots);
     }
     else {
         return -1;
@@ -353,7 +347,7 @@ void testMode() {
 }
 /*/ END MODE MENU /*/
 
-int main() {
+int main() { // TODO build with ded32 flags
     char mode[1] = "";
 
     printf("Choose mode: Test Mode (0) / Manual Mode (1). Input (0/1):");
