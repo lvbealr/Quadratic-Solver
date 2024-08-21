@@ -28,6 +28,16 @@ enum solveCode {
     QUADRATIC_TWO_ROOTS = 5, // D > 0
     INVALID             = 6
 };
+/*/ START OF TESTDATA STRUCT /*/
+struct testData {
+    double a = NAN;
+    double b = NAN;
+    double c = NAN;
+    double trueX1 = NAN;
+    double trueX2 = NAN;
+    double trueRootCount = NAN;
+};
+/*/ END OF TESTDATA STRUCT /*/
 
 /*/ START OF ROOTLIST STRUCT /*/
 struct rootList {
@@ -216,6 +226,7 @@ bool coefficientInput(char coefficientName, double *coefficient) {
         }
         else {
             *coefficient = atof(coefficient_str);
+            while (getchar() != '\n') {}
             return true;
         }
     }
@@ -223,8 +234,25 @@ bool coefficientInput(char coefficientName, double *coefficient) {
 }
 
 /*/ START OF TESTS /*/
-void printTestError(int testNum, double a, double b, double c, double trueX1, double trueX2, double trueRootCount, double testX1, double testX2, double testRootCount) {
-    printf("\nTest %d: FAILED! a = %lg, b = %lg, c = %lg\nx1 = %lg, x2 = %lg, testRootCount = %lg\n"
+testData tests[] = {
+        {0, 0, 0, NAN, NAN, NAN},                  // LINEAR_INF_ROOTS --- OK
+        {0, 0, 0, 1, 2, 2},                        // LINEAR_INF_ROOTS --- FAILED
+        {0, 0, 5, NAN, NAN, 0},                    // LINEAR_NO_ROOTS --- OK
+        {0, 0, 3, .6, NAN, 1},                     // LINEAR_NO_ROOTS --- FAILED
+        {0, -.6, 3, 5, NAN, 1},                    // LINEAR_ONE_ROOT --- OK
+        {0, 8, 3, -9, NAN, 1},                     // LINEAR_ONE_ROOT --- FAILED
+        {1, 2, 10, NAN, NAN, 0},                   // QUADRATIC_NO_ROOT --- OK
+        {2.5, 999, 2, 3, NAN, 1},                  // QUADRATIC_NO_ROOT --- FAILED
+        {1, -4, 4, 2, NAN, 1},                     // QUADRATIC_ONE_ROOT --- OK
+        {1, 2, 1, 1, NAN, 1},                      // QUADRATIC_ONE_ROOT --- FAILED
+        {2.5, 9.8, 3.4, -3.535309, -0.384691, 2}, // QUADRATIC_TWO_ROOTS --- OK
+        {3, 7.4, -2.37, -2.75, 0.286901, 2}       // QUADRATIC_TWO_ROOTS --- FAILED
+};
+
+void printTestError(int testNum, double a, double b, double c,
+                    double trueX1, double trueX2, double trueRootCount,
+                    double testX1, double testX2, double testRootCount) {
+    printf("\nTest %d: FAILED! a = %lg, b = %lg,c = %lg\nx1 = %lg, x2 = %lg, testRootCount = %lg\n"
            "EXPECTED:\nx1 = %lg, x2 = %lg, rootCount = %lg\n",
            testNum, a, b, c, trueX1, trueX2, trueRootCount,
            testX1, testX2, testRootCount);
@@ -238,7 +266,7 @@ bool testCondition (double x, double y) {
     return (zeroComparison(x - y) == DOUBLE_EQUAL_EPS) || (isnan(x) && isnan(y));
 }
 
-void runTest(double a, double b, double c, double trueX1, double trueX2, double trueRootCount) {
+void runTest(testData test) {
     static int testNum = 0;
     testNum++;
     double testX1 = NAN, testX2 = NAN;
@@ -246,7 +274,7 @@ void runTest(double a, double b, double c, double trueX1, double trueX2, double 
     rootList testRootList;
     rootListInitialize(&testRootList);
 
-    Solve(a, b, c, &testRootList);
+    Solve(test.a, test.b, test.c, &testRootList);
 
     solveCode testStatus = testRootList.status;
 
@@ -272,29 +300,22 @@ void runTest(double a, double b, double c, double trueX1, double trueX2, double 
         default:
             break;
     }
-    if (testCondition(testX1, trueX1) && testCondition(testX2, trueX2) && testCondition(testRootCount, trueRootCount)) {
+    if (testCondition(testX1, test.trueX1) &&
+        testCondition(testX2, test.trueX2) &&
+        testCondition(testRootCount, test.trueRootCount)) {
         printTestSuccess(testNum);
     }
     else {
-        printTestError(testNum, a, b, c, trueX1, trueX2, trueRootCount, testX1, testX2, testRootCount);
+        printTestError(testNum, test.a, test.b, test.c, test.trueX1,
+                       test.trueX2, test.trueRootCount, testX1, testX2, testRootCount);
     }
     rootListDestruct(&testRootList);
 }
 
 void runAllTests() {
-    // TODO create test struct that contains a,b,c and true results
-    runTest(0, 0, 0, NAN, NAN, NAN); // LINEAR_INF_ROOTS --- OK
-    runTest(0, 0, 0, 1, 2, 2); // LINEAR_INF_ROOTS --- FAILED
-    runTest(0, 0, 5, NAN, NAN, 0); // LINEAR_NO_ROOTS --- OK
-    runTest(0, 0, 3, .6, NAN, 1); // LINEAR_NO_ROOTS --- FAILED
-    runTest(0, -.6, 3, 5, NAN, 1); // LINEAR_ONE_ROOT --- OK
-    runTest(0, 8, 3, -9, NAN, 1); // LINEAR_ONE_ROOT --- FAILED
-    runTest(1, 2, 10, NAN, NAN, 0); // QUADRATIC_NO_ROOT --- OK
-    runTest(2.5, 999, 2, 3, NAN, 1); // QUADRATIC_NO_ROOT --- FAILED
-    runTest(1, -4, 4, 2, NAN, 1); // QUADRATIC_ONE_ROOT --- OK
-    runTest(1, 2, 1, 1, NAN, 1); // QUADRATIC_ONE_ROOT --- FAILED
-    runTest(2.5, 9.8, 3.4, -3.535309, -0.384691, 2); // QUADRATIC_TWO_ROOTS --- OK
-    runTest(3, 7.4, -2.37, -2.75, 0.286901, 2); // QUADRATIC_TWO_ROOTS --- FAILED
+    for (int iter = 0; iter < 12; iter++) {
+        runTest(tests[iter]);
+    }
 }
 /*/ END OF TESTS /*/
 
