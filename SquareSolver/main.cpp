@@ -23,6 +23,25 @@ enum solveCode {
     QUADRATIC_TWO_ROOTS = 5, // D > 0
     INVALID             = 6
 };
+
+const char *solveCodeString[] = {
+        "LINEAR_INF_ROOTS",
+        "LINEAR_NO_ROOTS",
+        "LINEAR_ONE_ROOT",
+        "QUADRATIC_NO_ROOTS",
+        "QUADRATIC_ONE_ROOT",
+        "QUADRATIC_TWO_ROOTS",
+        "INVALID"
+};
+
+/*/ ROOTLIST STRUCT /*/
+struct rootList {
+    int count = 0;
+    double roots[MAX_ROOT_COUNT] = {};
+    solveCode status = INVALID;
+};
+/*/ ROOTLIST STRUCT /*/
+
 /*/ START OF TESTDATA STRUCT /*/
 struct testData {
     double a = NAN;
@@ -30,17 +49,34 @@ struct testData {
     double c = NAN;
     double trueX1 = NAN;
     double trueX2 = NAN;
-    double trueRootCount = NAN;
+    solveCode trueStatus = INVALID;
 };
 /*/ END OF TESTDATA STRUCT /*/
 
-/*/ START OF ROOTLIST STRUCT /*/
-struct rootList {
-    int count = 0;
-    double roots[MAX_ROOT_COUNT] = {};
-    solveCode status = INVALID;
-};
+/*/ FUNCTIONS PROTOTYPES /*/
+void rootListInitialize(rootList *);
+void rootListDestruct(rootList *);
+int getRootCount(const rootList *);
+bool pushRoot(rootList *, double);
+void printRoot(const rootList *);
+void setStatus(rootList *, solveCode);
+void printResult(rootList *);
+zeroComparisonCode zeroComparison(double);
+void linearSolver(double, double, rootList *);
+void squareSolver(double, double, double, rootList *);
+void solve(double, double, double, rootList *);
+bool inputCheck(char *);
+bool coefficientInput(char, double *);
+void printTestError(int, double, double, double, double, double, int, double, double, int);
+void printTestSuccess(int);
+bool testCondition(double, double);
+void runTest(testData, int);
+void runAllTests();
+int manualMode();
+void testMode();
+/*/ FUNCTIONS PROTOTYPES /*/
 
+/*/ START OF ROOTLIST STRUCT /*/
 void rootListInitialize(rootList *roots) {
     assert(roots != NULL);
 
@@ -104,25 +140,31 @@ void setStatus(rootList *roots, solveCode status) {
 
 void printResult(rootList *roots) {
     switch (roots->status) {
-        case LINEAR_INF_ROOTS:
+        case LINEAR_INF_ROOTS: {
             printf("Infinitely many solutions");
             break;
-        case LINEAR_NO_ROOTS:
+        }
+        case LINEAR_NO_ROOTS: {
             printf("No solutions");
             break;
-        case LINEAR_ONE_ROOT:
+        }
+        case LINEAR_ONE_ROOT: {
             printf("It is linear (non-quadratic) "
                    "equation\nSolutions: ");
             break;
-        case QUADRATIC_NO_ROOTS:
+        }
+        case QUADRATIC_NO_ROOTS: {
             printf("D < 0: No real solutions");
             break;
-        case QUADRATIC_ONE_ROOT:
+        }
+        case QUADRATIC_ONE_ROOT: {
             printf("D = 0\nSolutions: ");
             break;
-        case QUADRATIC_TWO_ROOTS:
+        }
+        case QUADRATIC_TWO_ROOTS: {
             printf("D > 0\nSolutions: ");
             break;
+        }
         case INVALID:
         default:
             break;
@@ -167,21 +209,26 @@ void squareSolver(double const a, double const b,
 
     zeroComparisonCode code = zeroComparison(discriminant);
     switch (code) {
-        case DOUBLE_LESS_EPS:
+        case DOUBLE_LESS_EPS: {
             setStatus(roots, QUADRATIC_NO_ROOTS);
             break;
-        case DOUBLE_EQUAL_EPS:
+        }
+        case DOUBLE_EQUAL_EPS: {
             setStatus(roots, QUADRATIC_ONE_ROOT);
-            pushRoot(roots, -b/2/a);
+            pushRoot(roots, -b / 2 / a);
             break;
-        case DOUBLE_GREATER_EPS:
+        }
+        case DOUBLE_GREATER_EPS: {
             setStatus(roots, QUADRATIC_TWO_ROOTS);
 
-            double p = -b/2/a;
-            double q = sqrt(discriminant)/2/a;
+            double p = -b / 2 / a;
+            double q = sqrt(discriminant) / 2 / a;
 
-            pushRoot(roots, (p-q));
-            pushRoot(roots, (p+q));
+            pushRoot(roots, (p - q));
+            pushRoot(roots, (p + q));
+            break;
+        }
+        default:
             break;
     }
 }
@@ -231,13 +278,13 @@ bool coefficientInput(char coefficientName, double *coefficient) {
 
 /*/ START OF TESTS /*/
 void printTestError(int testNum, double a, double b, double c,
-                    double trueX1, double trueX2, double trueRootCount,
-                    double testX1, double testX2, double testRootCount) {
+                    double trueX1, double trueX2, int trueStatus,
+                    double testX1, double testX2, int testStatus) {
     printf("\nTest %d: " "\033[1;31mFAILED! \033[0m"
-                         "a = %lg, b = %lg,c = %lg\nx1 = %lg, x2 = %lg, testRootCount = %lg\n"
-                         "EXPECTED:\nx1 = %lg, x2 = %lg, rootCount = %lg\n",
-                         testNum, a, b, c, trueX1, trueX2, trueRootCount,
-                         testX1, testX2, testRootCount);
+                         "a = %lg, b = %lg,c = %lg\nx1 = %lg, x2 = %lg, testStatus = %s\n"
+                         "EXPECTED:\nx1 = %lg, x2 = %lg, trueStatus = %s\n",
+                         testNum, a, b, c, testX1, testX2, solveCodeString[testStatus],
+                         trueX1, trueX2, solveCodeString[trueStatus]);
 }
 
 void printTestSuccess(int testNum) {
@@ -250,7 +297,6 @@ bool testCondition (double x, double y) {
 
 void runTest(testData test, int testNum) {
     double testX1 = NAN, testX2 = NAN;
-    double testRootCount = NAN;
     rootList testRootList = {};
     rootListInitialize(&testRootList);
 
@@ -258,54 +304,50 @@ void runTest(testData test, int testNum) {
 
     solveCode testStatus = testRootList.status;
 
-    switch (testStatus) { // TODO use your enum for rootsCount
-        case LINEAR_INF_ROOTS:
-            testRootCount = NAN;
+    switch (testStatus) {
+        case LINEAR_ONE_ROOT:
+        case QUADRATIC_ONE_ROOT: {
+            testX1 = testRootList.roots[0];
             break;
-        case QUADRATIC_TWO_ROOTS:
-            testRootCount = 2;
+        }
+        case QUADRATIC_TWO_ROOTS: {
             testX1 = testRootList.roots[0];
             testX2 = testRootList.roots[1];
             break;
-        case LINEAR_ONE_ROOT:
-        case QUADRATIC_ONE_ROOT:
-            testRootCount = 1;
-            testX1 = testRootList.roots[0];
-            break;
+        }
+        case LINEAR_INF_ROOTS:
         case LINEAR_NO_ROOTS:
         case QUADRATIC_NO_ROOTS:
-            testRootCount = 0;
-            break;
         case INVALID:
         default:
             break;
     }
     if (testCondition(testX1, test.trueX1) &&
         testCondition(testX2, test.trueX2) &&
-        testCondition(testRootCount, test.trueRootCount)) {
+        testStatus == test.trueStatus           ) {
         printTestSuccess(testNum);
     }
     else {
-        printTestError(testNum, test.a, test.b, test.c, test.trueX1,
-                       test.trueX2, test.trueRootCount, testX1, testX2, testRootCount);
+        printTestError(testNum, test.a, test.b, test.c, testX1,
+                       testX2, test.trueStatus, test.trueX1, test.trueX2, testStatus);
     }
     rootListDestruct(&testRootList);
 }
 
 void runAllTests() {
     static testData tests[] = {
-            {0, 0, 0, NAN, NAN, NAN},                  // LINEAR_INF_ROOTS --- OK
-            {0, 0, 0, 1, 2, 2},                        // LINEAR_INF_ROOTS --- FAILED
-            {0, 0, 5, NAN, NAN, 0},                    // LINEAR_NO_ROOTS --- OK
-            {0, 0, 3, .6, NAN, 1},                     // LINEAR_NO_ROOTS --- FAILED
-            {0, -.6, 3, 5, NAN, 1},                    // LINEAR_ONE_ROOT --- OK
-            {0, 8, 3, -9, NAN, 1},                     // LINEAR_ONE_ROOT --- FAILED
-            {1, 2, 10, NAN, NAN, 0},                   // QUADRATIC_NO_ROOT --- OK
-            {2.5, 999, 2, 3, NAN, 1},                  // QUADRATIC_NO_ROOT --- FAILED
-            {1, -4, 4, 2, NAN, 1},                     // QUADRATIC_ONE_ROOT --- OK
-            {1, 2, 1, 1, NAN, 1},                      // QUADRATIC_ONE_ROOT --- FAILED
-            {2.5, 9.8, 3.4, -3.535309, -0.384691, 2}, // QUADRATIC_TWO_ROOTS --- OK
-            {3, 7.4, -2.37, -2.75, 0.286901, 2}       // QUADRATIC_TWO_ROOTS --- FAILED
+            {0, 0, 0, NAN, NAN, LINEAR_INF_ROOTS},                       // LINEAR_INF_ROOTS --- OK
+            {0, 0, 0, 1, 2, LINEAR_INF_ROOTS},                           // LINEAR_INF_ROOTS --- FAILED
+            {0, 0, 5, NAN, NAN, LINEAR_NO_ROOTS},                        // LINEAR_NO_ROOTS --- OK
+            {0, 0, 3, .6, NAN, LINEAR_NO_ROOTS},                         // LINEAR_NO_ROOTS --- FAILED
+            {0, -.6, 3, 5, NAN, LINEAR_ONE_ROOT},                        // LINEAR_ONE_ROOT --- OK
+            {0, 8, 3, -9, NAN, LINEAR_ONE_ROOT},                         // LINEAR_ONE_ROOT --- FAILED
+            {1, 2, 10, NAN, NAN, QUADRATIC_NO_ROOTS},                    // QUADRATIC_NO_ROOTS --- OK
+            {2.5, 999, 2, 3, NAN, QUADRATIC_NO_ROOTS},                   // QUADRATIC_NO_ROOTS --- FAILED
+            {1, -4, 4, 2, NAN, QUADRATIC_ONE_ROOT},                      // QUADRATIC_ONE_ROOT --- OK
+            {1, 2, 1, 1, NAN, QUADRATIC_ONE_ROOT},                       // QUADRATIC_ONE_ROOT --- FAILED
+            {2.5, 9.8, 3.4, -3.535309, -0.384691, QUADRATIC_TWO_ROOTS}, // QUADRATIC_TWO_ROOTS --- OK
+            {3, 7.4, -2.37, -2.75, 0.286901, QUADRATIC_TWO_ROOTS}       // QUADRATIC_TWO_ROOTS --- FAILED
     };
     for (int iter = 0; iter < 12; iter++) {
         runTest(tests[iter], iter + 1);
@@ -347,7 +389,7 @@ void testMode() {
 }
 /*/ END MODE MENU /*/
 
-int main() { // TODO build with ded32 flags
+int main() {
     char mode[1] = "";
 
     printf("Choose mode: Test Mode (0) / Manual Mode (1). Input (0/1):");
