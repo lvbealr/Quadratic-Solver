@@ -12,7 +12,7 @@
 const double EPS = 1e-07;
 const int MAX_ROOT_COUNT = 2;
 
-enum nullComparisonCode {
+enum zeroComparisonCode {
     DOUBLE_LESS_EPS     = 0, // x < -EPS
     DOUBLE_EQUAL_EPS    = 1, // |x| <= EPS
     DOUBLE_GREATER_EPS  = 2, // x > EPS
@@ -122,8 +122,8 @@ void printResult(rootList *roots) {
 }
 /*/ END OF ROOTLIST STRUCT /*/
 
-/*/ START OF NULLCOMPARISON FUNCTION /*/
-nullComparisonCode nullComparison(double x) { // TODO zeroComparison
+/*/ START OF zeroComparison FUNCTION /*/
+zeroComparisonCode zeroComparison(double x) {
     if (x < -EPS)
         return DOUBLE_LESS_EPS;
     else if (fabs(x) <= EPS)
@@ -131,11 +131,11 @@ nullComparisonCode nullComparison(double x) { // TODO zeroComparison
     else
         return DOUBLE_GREATER_EPS;
 }
-/*/ END OF NULLCOMPARISON FUNCTION /*/
+/*/ END OF zeroComparison FUNCTION /*/
 
 void linearSolver(double const b, double const c, rootList *roots) {
-    if (nullComparison(b) == DOUBLE_EQUAL_EPS) {
-        if (nullComparison(c) == DOUBLE_EQUAL_EPS) { // TODO think about brackets with if everywhere
+    if (zeroComparison(b) == DOUBLE_EQUAL_EPS) {
+        if (zeroComparison(c) == DOUBLE_EQUAL_EPS) { // TODO think about brackets with if everywhere
             setStatus(roots, LINEAR_INF_ROOTS);
         }
         else {
@@ -152,7 +152,7 @@ void squareSolver(double const a, double const b,
                   double const c, rootList *roots) {
     double const discriminant = b*b - 4*a*c;
 
-    nullComparisonCode code = nullComparison(discriminant);
+    zeroComparisonCode code = zeroComparison(discriminant);
     switch (code) {
         case DOUBLE_LESS_EPS:
             setStatus(roots, QUADRATIC_NO_ROOTS);
@@ -181,7 +181,7 @@ void Solve(double const a, double const b,
     assert(isfinite(c)); // TODO if, not assert (user input)
     assert(roots != NULL);
 
-    if (nullComparison(a) == DOUBLE_EQUAL_EPS) {
+    if (zeroComparison(a) == DOUBLE_EQUAL_EPS) {
         linearSolver(b, c, roots);
     }
     else {
