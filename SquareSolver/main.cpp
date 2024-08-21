@@ -37,6 +37,7 @@ struct rootList {
 
 void rootListInitialize(rootList *roots) {
     assert(roots != NULL);
+
     roots->count = 0;
     for (int index = 0; index < MAX_ROOT_COUNT; index++) {
         roots->roots[index] = NAN;
@@ -46,6 +47,7 @@ void rootListInitialize(rootList *roots) {
 
 void rootListDestruct(rootList *roots) {
     assert(roots != NULL);
+
     roots->count = -1;
     for (int index = 0; index < MAX_ROOT_COUNT; index++) {
         roots->roots[index] = NAN;
@@ -55,6 +57,7 @@ void rootListDestruct(rootList *roots) {
 
 int getRootCount(const rootList *roots) {
     assert(roots != NULL);
+
     switch (roots->status) {
         case LINEAR_ONE_ROOT:
         case QUADRATIC_ONE_ROOT:
@@ -72,6 +75,7 @@ int getRootCount(const rootList *roots) {
 
 bool pushRoot(rootList *roots, double root) {
     assert(roots != NULL);
+
     if ((roots->count < 0) && (roots->count >= getRootCount(roots))) {
         return false;
     }
@@ -124,12 +128,15 @@ void printResult(rootList *roots) {
 
 /*/ START OF zeroComparison FUNCTION /*/
 zeroComparisonCode zeroComparison(double x) {
-    if (x < -EPS)
+    if (x < -EPS) {
         return DOUBLE_LESS_EPS;
-    else if (fabs(x) <= EPS)
+    }
+    else if (fabs(x) <= EPS) {
         return DOUBLE_EQUAL_EPS;
-    else
+    }
+    else {
         return DOUBLE_GREATER_EPS;
+    }
 }
 /*/ END OF zeroComparison FUNCTION /*/
 
@@ -216,13 +223,18 @@ int main() {
     bool flag = false;
     if (coefficientInput('a', &a)) {
         if (coefficientInput('b', &b)) {
-            if (coefficientInput('c', &c)) // TODO brackets
+            if (coefficientInput('c', &c)) {
                 flag = true;
+            }
         }
     }
 
-    if (flag) Solve(a, b, c, &roots); // TODO separate lines for if condition and its body
-    else return -1;
+    if (flag) {
+        Solve(a, b, c, &roots);
+    }
+    else {
+        return -1;
+    }
 
     printResult(&roots);
 
