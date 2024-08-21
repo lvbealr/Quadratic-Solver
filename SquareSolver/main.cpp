@@ -143,7 +143,7 @@ zeroComparisonCode zeroComparison(double x) {
 
 void linearSolver(double const b, double const c, rootList *roots) {
     if (zeroComparison(b) == DOUBLE_EQUAL_EPS) {
-        if (zeroComparison(c) == DOUBLE_EQUAL_EPS) { // TODO think about brackets with if everywhere
+        if (zeroComparison(c) == DOUBLE_EQUAL_EPS) {
             setStatus(roots, LINEAR_INF_ROOTS);
         }
         else {
