@@ -35,7 +35,8 @@ struct rootList {
     solveCode status = INVALID;
 };
 
-void rootListInitialize(rootList *roots) { // TODO assert
+void rootListInitialize(rootList *roots) {
+    assert(roots != NULL);
     roots->count = 0;
     for (int index = 0; index < MAX_ROOT_COUNT; index++) {
         roots->roots[index] = NAN;
@@ -43,7 +44,8 @@ void rootListInitialize(rootList *roots) { // TODO assert
     roots->status = INVALID;
 }
 
-void rootListDestruct(rootList *roots) { // TODO assert
+void rootListDestruct(rootList *roots) {
+    assert(roots != NULL);
     roots->count = -1;
     for (int index = 0; index < MAX_ROOT_COUNT; index++) {
         roots->roots[index] = NAN;
@@ -51,7 +53,8 @@ void rootListDestruct(rootList *roots) { // TODO assert
     roots->status = INVALID;
 }
 
-int getRootCount(const rootList *roots) { // TODO assert
+int getRootCount(const rootList *roots) {
+    assert(roots != NULL);
     switch (roots->status) {
         case LINEAR_ONE_ROOT:
         case QUADRATIC_ONE_ROOT:
@@ -67,7 +70,8 @@ int getRootCount(const rootList *roots) { // TODO assert
     }
 }
 
-bool pushRoot(rootList *roots, double root) { // TODO assert
+bool pushRoot(rootList *roots, double root) {
+    assert(roots != NULL);
     if ((roots->count < 0) && (roots->count >= getRootCount(roots))) {
         return false;
     }
@@ -89,20 +93,26 @@ void setStatus(rootList *roots, solveCode status) {
 }
 
 void printResult(rootList *roots) {
-    switch (roots->status) { // TODO write break on a new line
+    switch (roots->status) {
         case LINEAR_INF_ROOTS:
-            printf("Infinitely many solutions"); break;
+            printf("Infinitely many solutions");
+            break;
         case LINEAR_NO_ROOTS:
-            printf("No solutions"); break;
+            printf("No solutions");
+            break;
         case LINEAR_ONE_ROOT:
             printf("It is linear (non-quadratic) "
-                   "equation\nSolutions: "); break;
+                   "equation\nSolutions: ");
+            break;
         case QUADRATIC_NO_ROOTS:
-            printf("D < 0: No real solutions"); break;
+            printf("D < 0: No real solutions");
+            break;
         case QUADRATIC_ONE_ROOT:
-            printf("D = 0\nSolutions: "); break;
+            printf("D = 0\nSolutions: ");
+            break;
         case QUADRATIC_TWO_ROOTS:
-            printf("D > 0\nSolutions: "); break;
+            printf("D > 0\nSolutions: ");
+            break;
         case INVALID:
         default:
             break;
