@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cassert>
 #include <math.h>
+#include <cctype>
 
 const double EPS = 1e-07;
 const int MAX_ROOT_COUNT = 2;
@@ -183,9 +184,6 @@ void squareSolver(double const a, double const b,
 void Solve(double const a, double const b,
            double const c, rootList *roots) {
 
-    assert(isfinite(a));
-    assert(isfinite(b));
-    assert(isfinite(c)); // TODO if, not assert (user input)
     assert(roots != NULL);
 
     if (zeroComparison(a) == DOUBLE_EQUAL_EPS) {
@@ -196,6 +194,14 @@ void Solve(double const a, double const b,
     }
 }
 
+bool inputCheck(char coefficient_str[100]) {
+    bool positiveGreatOneNum = isdigit(coefficient_str[0]);
+    bool positiveLessOneNum = coefficient_str[0] == '.' && isdigit(coefficient_str[1]);
+    bool negativeGreatOneNum = coefficient_str[0] == '-' && isdigit(coefficient_str[1]);
+    bool negativeLessOneNum = coefficient_str[0] == '-' && coefficient_str[1] == '.' && isdigit(coefficient_str[2]);
+    return !(positiveGreatOneNum || positiveLessOneNum || negativeGreatOneNum || negativeLessOneNum);
+}
+
 bool coefficientInput(char coefficientName, double *coefficient) {
     char coefficient_str[100] = "";
 
@@ -203,7 +209,7 @@ bool coefficientInput(char coefficientName, double *coefficient) {
         printf("Input valid value of coefficient %c:", coefficientName);
         gets(coefficient_str);
 
-        if ((coefficient_str[0] < '0') || (coefficient_str[0] > '9')) { // TODO isnum, isalpha, isalnum
+        if (inputCheck(coefficient_str)) {
             continue;
         }
         else {
