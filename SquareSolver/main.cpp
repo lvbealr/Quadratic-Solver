@@ -169,6 +169,7 @@ void Solve(double const a, double const b,
     assert(isfinite(a));
     assert(isfinite(b));
     assert(isfinite(c));
+    assert(roots != NULL);
 
     if (nullComparison(a) == DOUBLE_EQUAL_EPS) {
         linearSolver(b, c, roots);
