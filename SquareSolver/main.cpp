@@ -220,30 +220,100 @@ bool coefficientInput(char coefficientName, double *coefficient) {
     return false;
 }
 
-int main() {
-    rootList roots;
-    rootListInitialize(&roots);
+/*/ START OF TESTS /*/
+void printTestError(int testNum, double a, double b, double c, double trueX1, double trueX2, double trueRootCount, double testX1, double testX2, double testRootCount) {
+    printf("\nERROR. Test %d: a = %lg, b = %lg, c = %lg\nx1 = %lg, x2 = %lg, testRootCount = %lg\n"
+           "EXPECTED:\nx1 = %lg, x2 = %lg, rootCount = %lg\n",
+           testNum, a, b, c, trueX1, trueX2, trueRootCount,
+           testX1, testX2, testRootCount);
+}
 
-    double a = NAN, b = NAN, c = NAN;
+void printTestSuccess(int testNum) {
+    printf("\nTest %d. OK!", testNum);
+}
 
-    bool flag = false;
-    if (coefficientInput('a', &a)) {
-        if (coefficientInput('b', &b)) {
-            if (coefficientInput('c', &c)) {
-                flag = true;
-            }
-        }
+bool testCondition (double x, double y) {
+    return (zeroComparison(x - y) == DOUBLE_EQUAL_EPS) || (isnan(x) && isnan(y));
+}
+
+void runTest(double a, double b, double c, double trueX1, double trueX2, double trueRootCount) {
+    static int testNum = 0;
+    testNum++;
+    double testX1 = NAN, testX2 = NAN;
+    double testRootCount = NAN;
+    rootList testRootList;
+    rootListInitialize(&testRootList);
+
+    Solve(a, b, c, &testRootList);
+
+    solveCode testStatus = testRootList.status;
+
+    switch (testStatus) {
+        case LINEAR_INF_ROOTS:
+            testRootCount = NAN;
+            break;
+        case QUADRATIC_TWO_ROOTS:
+            testRootCount = 2;
+            testX1 = testRootList.roots[0];
+            testX2 = testRootList.roots[1];
+            break;
+        case LINEAR_ONE_ROOT:
+        case QUADRATIC_ONE_ROOT:
+            testRootCount = 1;
+            testX1 = testRootList.roots[0];
+            break;
+        case LINEAR_NO_ROOTS:
+        case QUADRATIC_NO_ROOTS:
+            testRootCount = 0;
+            break;
+        case INVALID:
+        default:
+            break;
     }
-
-    if (flag) {
-        Solve(a, b, c, &roots);
+    if (testCondition(testX1, trueX1) && testCondition(testX2, trueX2) && testCondition(testRootCount, trueRootCount)) {
+        printTestSuccess(testNum);
     }
     else {
-        return -1;
+        printTestError(testNum, a, b, c, trueX1, trueX2, trueRootCount, testX1, testX2, testRootCount);
     }
+    rootListDestruct(&testRootList);
+}
 
-    printResult(&roots);
+void runAllTests() {
+    runTest(0, 0, 0, NAN, NAN, NAN);
+    runTest(1, 2, 1, -1, NAN, 1);
+}
+/*/ END OF TESTS /*/
 
-    rootListDestruct(&roots);
+int main() {
+
+    /*/ START USER INPUT /*/
+//    rootList roots;
+//    rootListInitialize(&roots);
+//
+//    double a = NAN, b = NAN, c = NAN;
+//
+//    bool flag = false;
+//    if (coefficientInput('a', &a)) {
+//        if (coefficientInput('b', &b)) {
+//            if (coefficientInput('c', &c)) {
+//                flag = true;
+//            }
+//        }
+//    }
+//
+//    if (flag) {
+//        Solve(a, b, c, &roots);
+//    }
+//    else {
+//        return -1;
+//    }
+//
+//    printResult(&roots);
+//
+//    rootListDestruct(&roots);
+    /*/ END USER INPUT /*/
+    runAllTests();
+
     return 0;
 }
