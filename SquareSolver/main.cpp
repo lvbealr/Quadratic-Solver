@@ -10,7 +10,7 @@
 #include <math.h>
 
 const double EPS = 1e-07;
-const int MAX_COUNT = 2;
+const int MAX_ROOT_COUNT = 2;
 
 enum nullComparisonCode {
     DOUBLE_LESS_EPS     = 0, // x < -EPS
@@ -31,27 +31,27 @@ enum solveCode {
 /*/ START OF ROOTLIST STRUCT /*/
 struct rootList {
     int count = 0;
-    double roots[MAX_COUNT] = {};
+    double roots[MAX_ROOT_COUNT] = {};
     solveCode status = INVALID;
 };
 
-void rootListInitialize(rootList *roots) {
+void rootListInitialize(rootList *roots) { // TODO assert
     roots->count = 0;
-    for (int index = 0; index < MAX_COUNT; index++) {
+    for (int index = 0; index < MAX_ROOT_COUNT; index++) {
         roots->roots[index] = NAN;
     }
     roots->status = INVALID;
 }
 
-void rootListDestruct(rootList *roots) {
+void rootListDestruct(rootList *roots) { // TODO assert
     roots->count = -1;
-    for (int index = 0; index < MAX_COUNT; index++) {
+    for (int index = 0; index < MAX_ROOT_COUNT; index++) {
         roots->roots[index] = NAN;
     }
     roots->status = INVALID;
 }
 
-int getRootCount(const rootList *roots) {
+int getRootCount(const rootList *roots) { // TODO assert
     switch (roots->status) {
         case LINEAR_ONE_ROOT:
         case QUADRATIC_ONE_ROOT:
@@ -67,7 +67,7 @@ int getRootCount(const rootList *roots) {
     }
 }
 
-bool pushRoot(rootList *roots, double root) {
+bool pushRoot(rootList *roots, double root) { // TODO assert
     if ((roots->count < 0) && (roots->count >= getRootCount(roots))) {
         return false;
     }
@@ -89,7 +89,7 @@ void setStatus(rootList *roots, solveCode status) {
 }
 
 void printResult(rootList *roots) {
-    switch (roots->status) {
+    switch (roots->status) { // TODO write break on a new line
         case LINEAR_INF_ROOTS:
             printf("Infinitely many solutions"); break;
         case LINEAR_NO_ROOTS:
@@ -113,7 +113,7 @@ void printResult(rootList *roots) {
 /*/ END OF ROOTLIST STRUCT /*/
 
 /*/ START OF NULLCOMPARISON FUNCTION /*/
-nullComparisonCode nullComparison(double x) {
+nullComparisonCode nullComparison(double x) { // TODO zeroComparison
     if (x < -EPS)
         return DOUBLE_LESS_EPS;
     else if (fabs(x) <= EPS)
@@ -125,7 +125,7 @@ nullComparisonCode nullComparison(double x) {
 
 void linearSolver(double const b, double const c, rootList *roots) {
     if (nullComparison(b) == DOUBLE_EQUAL_EPS) {
-        if (nullComparison(c) == DOUBLE_EQUAL_EPS) {
+        if (nullComparison(c) == DOUBLE_EQUAL_EPS) { // TODO think about brackets with if everywhere
             setStatus(roots, LINEAR_INF_ROOTS);
         }
         else {
@@ -168,7 +168,7 @@ void Solve(double const a, double const b,
 
     assert(isfinite(a));
     assert(isfinite(b));
-    assert(isfinite(c));
+    assert(isfinite(c)); // TODO if, not assert (user input)
     assert(roots != NULL);
 
     if (nullComparison(a) == DOUBLE_EQUAL_EPS) {
@@ -186,7 +186,7 @@ bool coefficientInput(char coefficientName, double *coefficient) {
         printf("Input valid value of coefficient %c:", coefficientName);
         gets(coefficient_str);
 
-        if ((coefficient_str[0] < '0') || (coefficient_str[0] > '9')) {
+        if ((coefficient_str[0] < '0') || (coefficient_str[0] > '9')) { // TODO isnum, isalpha, isalnum
             continue;
         }
         else {
@@ -206,12 +206,12 @@ int main() {
     bool flag = false;
     if (coefficientInput('a', &a)) {
         if (coefficientInput('b', &b)) {
-            if (coefficientInput('c', &c))
+            if (coefficientInput('c', &c)) // TODO brackets
                 flag = true;
         }
     }
 
-    if (flag) Solve(a, b, c, &roots);
+    if (flag) Solve(a, b, c, &roots); // TODO separate lines for if condition and its body
     else return -1;
 
     printResult(&roots);
