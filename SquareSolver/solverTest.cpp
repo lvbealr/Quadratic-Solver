@@ -19,7 +19,7 @@ void printTestError(int testNum, double a, double b, double c,
                     double trueX1, double trueX2, int trueStatus,
                     double testX1, double testX2, int testStatus) {
     printf("\nTest %d: " "\033[1;31mFAILED! \033[0m"
-                         "a = %lg, b = %lg,c = %lg\nx1 = %lg, x2 = %lg, testStatus = %s\n"
+                         "a = %lg, b = %lg, c = %lg\nx1 = %lg, x2 = %lg, testStatus = %s\n"
                          "EXPECTED:\nx1 = %lg, x2 = %lg, trueStatus = %s\n",
                          testNum, a, b, c, testX1, testX2, solveCodeString[testStatus],
                          trueX1, trueX2, solveCodeString[trueStatus]);
@@ -62,7 +62,7 @@ void runTest(testData test, int testNum) {
     }
     if (testCondition(testX1, test.trueX1) &&
         testCondition(testX2, test.trueX2) &&
-        testStatus == test.trueStatus           ) {
+        testStatus == test.trueStatus    ) {
         printTestSuccess(testNum);
     }
     else {
@@ -87,8 +87,8 @@ void runAllTests() {
             {2.5, 9.8, 3.4,   -3.535309, -0.384691, QUADRATIC_TWO_ROOTS},    // QUADRATIC_TWO_ROOTS --- OK
             {3,   7.4, -2.37, -2.75,     0.286901,  QUADRATIC_TWO_ROOTS}     // QUADRATIC_TWO_ROOTS --- FAILED
     };
-    for (int iter = 0; iter < 12; iter++) { // TODo what is 12??  (use sizeof)
-        runTest(tests[iter], iter + 1);
+    for (int testNum = 0; testNum < sizeof(tests)/sizeof(tests[0]); testNum++) {
+        runTest(tests[testNum], testNum + 1);
     }
 }
 /*/ END OF TESTS /*/
