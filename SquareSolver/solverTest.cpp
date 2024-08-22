@@ -33,12 +33,12 @@ bool testCondition (double x, double y) {
     return (zeroComparison(x - y) == DOUBLE_EQUAL_EPS) || (isnan(x) && isnan(y));
 }
 
-void runTest(testData *test, int testNum) {
+void runTest(testData test, int testNum) {
     double testX1 = NAN, testX2 = NAN;
     rootList testRootList = {};
     rootListInitialize(&testRootList);
 
-    solve(test->a, test->b, test->c, &testRootList);
+    solve(test.a, test.b, test.c, &testRootList);
 
     solveCode testStatus = testRootList.status;
 
@@ -60,14 +60,14 @@ void runTest(testData *test, int testNum) {
         default:
             break;
     }
-    if (testCondition(testX1, test->trueX1) &&
-        testCondition(testX2, test->trueX2) &&
-        testStatus == test->trueStatus    ) {
+    if (testCondition(testX1, test.trueX1) &&
+        testCondition(testX2, test.trueX2) &&
+        testStatus == test.trueStatus    ) {
         printTestSuccess(testNum);
     }
     else {
-        printTestError(testNum, test->a, test->b, test->c, testX1,
-                       testX2, test->trueStatus, test->trueX1, test->trueX2, testStatus);
+        printTestError(testNum, test.a, test.b, test.c, testX1,
+                       testX2, test.trueStatus, test.trueX1, test.trueX2, testStatus);
     }
     rootListDestruct(&testRootList);
 }
