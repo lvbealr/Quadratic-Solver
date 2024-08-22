@@ -16,10 +16,12 @@ struct testData {
 };
 /*/ END OF TESTDATA STRUCT /*/
 
-void printTestError(int, double, double, double, double, double, int, double, double, int);
-void printTestSuccess(int);
-bool testCondition(double, double);
-void runTest(testData, int);
+void printTestError(int testNum, double coefficient_a, double coefficient_b, double coefficient_c,
+                    double trueX1, double trueX2, int trueStatus,
+                    double testX1, double testX2, int testStatus);
+void printTestSuccess(int testNum);
+bool testCondition(double x, double y);
+void runTest(testData test, int testNum);
 void runAllTests();
 
 #endif

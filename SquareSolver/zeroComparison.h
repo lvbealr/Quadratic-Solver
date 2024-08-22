@@ -7,6 +7,6 @@ enum zeroComparisonCode {
     DOUBLE_GREATER_EPS  = 2, // x > EPS
 };
 
-zeroComparisonCode zeroComparison(double);
+zeroComparisonCode zeroComparison(double x);
 
 #endif

@@ -2,6 +2,7 @@
 #include <cmath>
 
 #include "coefficientInput.h"
+#include "stdinClean.h"
 
 bool coefficientInput(double *a, double *b, double *c) {
     
@@ -9,12 +10,18 @@ bool coefficientInput(double *a, double *b, double *c) {
         printf("Input values of coefficients a, b, c: ");
         
         if (scanf("%lg %lg %lg", a, b, c) != 3) {
-            while (getchar() != '\n') {}
+            stdinClean();
         }
         else {
             return true;
         }
     }
 
+    // getchar() EOF
+    // int currentSymbol;
+    // currentSymbol = getchar();
+    // while (currentSymbol != '\n' || currentSymbol != EOF)
+    // TOOD isspace()
+    
     return false;
 }

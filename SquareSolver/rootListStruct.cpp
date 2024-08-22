@@ -18,7 +18,7 @@ void rootListInitialize(rootList *roots) {
 void rootListDestruct(rootList *roots) {
     assert(roots != NULL);
 
-    roots->count = -1;
+    roots->count = INVALID_COUNT;
     for (int index = 0; index < MAX_ROOT_COUNT; index++) {
         roots->roots[index] = INFINITY;
     }

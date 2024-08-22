@@ -2,6 +2,7 @@
 #define ROOT_LIST_STRUCT_H_
 
 const int MAX_ROOT_COUNT = 2;
+const int INVALID_COUNT = -1;
 
 enum solveCode {
     LINEAR_INF_ROOTS    = 0, // a, b, c = 0
@@ -22,12 +23,12 @@ struct rootList {
 /*/ ROOTLIST STRUCT /*/
 
 /*/ FUNCTION PROTOTYPES /*/
-void rootListInitialize(rootList *);
-void rootListDestruct(rootList *);
-int getRootCount(const rootList *);
-bool pushRoot(rootList *, double);
-void printRoot(const rootList *);
-void setStatus(rootList *, solveCode);
-void printResult(rootList *);
+void rootListInitialize(rootList *roots);
+void rootListDestruct(rootList *roots);
+int getRootCount(const rootList *roots);
+bool pushRoot(rootList *roots, double root);
+void printRoot(const rootList *roots);
+void setStatus(rootList *roots, solveCode statusCode);
+void printResult(rootList *roots);
 /*/ FUNCTION PROTOTYPES /*/
 #endif 
