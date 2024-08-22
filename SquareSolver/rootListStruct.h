@@ -15,9 +15,9 @@ enum solveCode {
 
 /*/ ROOTLIST STRUCT /*/
 struct rootList {
-    int count = 0;
+    int count                    = 0;
     double roots[MAX_ROOT_COUNT] = {};
-    solveCode status = INVALID;
+    solveCode status             = INVALID;
 };
 /*/ ROOTLIST STRUCT /*/
 
