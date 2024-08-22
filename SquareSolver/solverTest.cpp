@@ -19,8 +19,8 @@ void printTestError(int testNum, double a, double b, double c,
                     double trueX1, double trueX2, int trueStatus,
                     double testX1, double testX2, int testStatus) {
     printf("\nTest %d: " "\033[1;31mFAILED! \033[0m"
-                         "a = %lg, b = %lg, c = %lg\nx1 = %lg, x2 = %lg, testStatus = %s\n"
-                         "EXPECTED:\nx1 = %lg, x2 = %lg, trueStatus = %s\n",
+                         "\033[1mA\033[0m" " = %lg, " "\033[1mB\033[0m" " = %lg, " "\033[1mC\033[0m" " = %lg\n" "\033[1mX1\033[0m" " = %10lg, " "\033[1mX2\033[0m" " = %10lg, " "\033[1mTESTSTATUS\033[0m" " = %10s\n"
+                         "EXPECTED:\n" "\033[1mX1\033[0m" " = %10lg, " "\033[1mX2\033[0m" " = %10lg, " "\033[1mTRUESTATUS\033[0m" " = %10s\n",
                          testNum, a, b, c, testX1, testX2, solveCodeString[testStatus],
                          trueX1, trueX2, solveCodeString[trueStatus]);
 }
