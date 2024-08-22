@@ -7,11 +7,11 @@
 
 /*/ START OF TESTDATA STRUCT /*/
 struct testData {
-    double a = NAN;
-    double b = NAN;
-    double c = NAN;
-    double trueX1 = NAN;
-    double trueX2 = NAN;
+    double a             = NAN;
+    double b             = NAN;
+    double c             = NAN;
+    double trueX1        = NAN;
+    double trueX2        = NAN;
     solveCode trueStatus = INVALID;
 };
 /*/ END OF TESTDATA STRUCT /*/
