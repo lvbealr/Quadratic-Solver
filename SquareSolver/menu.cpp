@@ -1,27 +1,21 @@
 #include <cmath>
+#include <cstdio>
 
-#include "testInput.h"
 #include "rootListStruct.h"
 #include "solver.h"
 #include "solverTest.h"
+#include "coefficientInput.h"
 
 /*/ START MODE MENU /*/
 int manualMode() {
-    rootList roots;
-    rootListInitialize(&roots);
-
     double a = NAN, b = NAN, c = NAN;
 
-    bool flag = false;
-    if (coefficientInput('a', &a)) {
-        if (coefficientInput('b', &b)) {
-            if (coefficientInput('c', &c)) {
-                flag = true;
-            }
-        }
-    }
+    rootList roots = {};
+    rootListInitialize(&roots);
 
-    if (flag) {
+    bool validCoefficientInput = coefficientInput(&a, &b, &c);
+
+    if (validCoefficientInput) {
         solve(a, b, c, &roots);
     }
     else {

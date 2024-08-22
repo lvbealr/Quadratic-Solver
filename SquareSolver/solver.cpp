@@ -1,10 +1,12 @@
 #include <cassert>
-#include <cmath>
+#include <math.h>
 
 #include "zeroComparison.h"
 #include "rootListStruct.h"
 
-void linearSolver(double const b, double const c, rootList *roots) {
+void linearSolver(const double b, const double c, rootList *roots) {
+    assert(roots != NULL);
+    
     if (zeroComparison(b) == DOUBLE_EQUAL_EPS) {
         if (zeroComparison(c) == DOUBLE_EQUAL_EPS) {
             setStatus(roots, LINEAR_INF_ROOTS);
@@ -19,8 +21,10 @@ void linearSolver(double const b, double const c, rootList *roots) {
     }
 }
 
-void squareSolver(double const a, double const b,
-                  double const c, rootList *roots) {
+void squareSolver(const double a, const double b,
+                  const double c, rootList *roots) {
+    assert(roots != NULL);
+
     double const discriminant = b*b - 4*a*c;
 
     zeroComparisonCode code = zeroComparison(discriminant);
@@ -49,8 +53,8 @@ void squareSolver(double const a, double const b,
     }
 }
 
-void solve(double const a, double const b,
-           double const c, rootList *roots) {
+void solve(const double a, const double b,
+           const double c, rootList *roots) {
 
     assert(roots != NULL);
 

@@ -1,7 +1,8 @@
 #include <cstdio>
-#include "rootListStruct.h"
 #include <cassert>
 #include <cmath>
+
+#include "rootListStruct.h"
 
 /*/ START OF ROOTLIST STRUCT /*/
 void rootListInitialize(rootList *roots) {
@@ -55,6 +56,8 @@ bool pushRoot(rootList *roots, double root) {
 }
 
 void printRoot(const rootList *roots) {
+    assert(roots != NULL);
+
     int rootCount = getRootCount(roots);
     for (int index = 0; index < rootCount; index++) {
         printf("%lg\t", roots->roots[index]);
@@ -62,10 +65,14 @@ void printRoot(const rootList *roots) {
 }
 
 void setStatus(rootList *roots, solveCode status) {
+    assert(roots != NULL);
+
     roots->status = status;
 }
 
 void printResult(rootList *roots) {
+    assert(roots != NULL);
+    
     switch (roots->status) {
         case LINEAR_INF_ROOTS: {
             printf("Infinitely many solutions");

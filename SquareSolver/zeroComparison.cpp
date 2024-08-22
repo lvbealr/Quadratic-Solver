@@ -1,5 +1,6 @@
-#include "zeroComparison.h"
 #include <cmath>
+
+#include "zeroComparison.h"
 
 const double EPS = 1e-05;
 

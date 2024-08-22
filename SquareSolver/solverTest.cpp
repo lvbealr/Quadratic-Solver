@@ -1,8 +1,9 @@
+#include <math.h>
+#include <cstdio>
+
 #include "solverTest.h"
 #include "zeroComparison.h"
 #include "rootListStruct.h"
-#include <math.h>
-#include <cstdio>
 
 static const char *solveCodeString[] = {
         "LINEAR_INF_ROOTS",
@@ -18,9 +19,11 @@ static const char *solveCodeString[] = {
 void printTestError(int testNum, double a, double b, double c,
                     double trueX1, double trueX2, int trueStatus,
                     double testX1, double testX2, int testStatus) {
-    printf("\nTest %d: " "\033[1;31mFAILED! \033[0m"
-                         "\033[1mA\033[0m" " = %lg, " "\033[1mB\033[0m" " = %lg, " "\033[1mC\033[0m" " = %lg\n" "\033[1mX1\033[0m" " = %10lg, " "\033[1mX2\033[0m" " = %10lg, " "\033[1mTESTSTATUS\033[0m" " = %10s\n"
-                         "EXPECTED:\n" "\033[1mX1\033[0m" " = %10lg, " "\033[1mX2\033[0m" " = %10lg, " "\033[1mTRUESTATUS\033[0m" " = %10s\n",
+    printf("\nTest %d: " "\033[1;31mFAILED! \033[0m" // TODO CREATE COLOR OUTPUT MODULE!!!
+                         "\033[1mA\033[0m" " = %lg, " "\033[1mB\033[0m" " = %lg, " "\033[1mC\033[0m" " = %lg\n"
+                         "\033[1mX1\033[0m" " = %10lg, " "\033[1mX2\033[0m" " = %10lg, " "\033[1mTESTSTATUS\033[0m" " = %10s\n"
+                         "EXPECTED:\n" "\033[1mX1\033[0m" " = %10lg, " "\033[1mX2\033[0m" " = %10lg, "
+                         "\033[1mTRUESTATUS\033[0m" " = %10s\n",
                          testNum, a, b, c, testX1, testX2, solveCodeString[testStatus],
                          trueX1, trueX2, solveCodeString[trueStatus]);
 }
@@ -38,7 +41,7 @@ void runTest(testData test, int testNum) {
     rootList testRootList = {};
     rootListInitialize(&testRootList);
 
-    solve(test.a, test.b, test.c, &testRootList);
+    solve(test.a, test.b, test.c, &testRootList); 
 
     solveCode testStatus = testRootList.status;
 
@@ -87,8 +90,9 @@ void runAllTests() {
             {2.5, 9.8, 3.4,   -3.535309, -0.384691, QUADRATIC_TWO_ROOTS},    // QUADRATIC_TWO_ROOTS --- OK
             {3,   7.4, -2.37, -2.75,     0.286901,  QUADRATIC_TWO_ROOTS}     // QUADRATIC_TWO_ROOTS --- FAILED
     };
+
     for (int testNum = 0; testNum < sizeof(tests)/sizeof(tests[0]); testNum++) {
-        runTest(&tests[testNum], testNum + 1);
+        runTest(tests[testNum], testNum + 1);
     }
 }
 /*/ END OF TESTS /*/
