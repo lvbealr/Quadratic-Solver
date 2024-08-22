@@ -1,3 +1,15 @@
+/**
+ * @file main.cpp
+ * @author lvbealr
+ * @brief 
+ * @version 1.0
+ * @date 2024-08-22
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
+
 #include <cstdio>
 #include <cassert>
 #include <math.h>
