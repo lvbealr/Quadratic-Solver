@@ -4,9 +4,9 @@
 
 bool inputCheck(char coefficient_str[100]) {
     bool positiveGreatOneNum = isdigit(coefficient_str[0]);
-    bool positiveLessOneNum = coefficient_str[0] == '.' && isdigit(coefficient_str[1]);
+    bool positiveLessOneNum  = coefficient_str[0] == '.' && isdigit(coefficient_str[1]);
     bool negativeGreatOneNum = coefficient_str[0] == '-' && isdigit(coefficient_str[1]);
-    bool negativeLessOneNum = coefficient_str[0] == '-' && coefficient_str[1] == '.' && isdigit(coefficient_str[2]);
+    bool negativeLessOneNum  = coefficient_str[0] == '-' && coefficient_str[1] == '.' && isdigit(coefficient_str[2]);
     return !(positiveGreatOneNum || positiveLessOneNum || negativeGreatOneNum || negativeLessOneNum);
 }
 
