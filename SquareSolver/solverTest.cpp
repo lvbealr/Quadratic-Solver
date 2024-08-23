@@ -4,6 +4,7 @@
 #include "solverTest.h"
 #include "zeroComparison.h"
 #include "rootListStruct.h"
+#include "customPrint.h"
 
 static const char *solveCodeString[] = {
         "LINEAR_INF_ROOTS",
@@ -19,17 +20,18 @@ static const char *solveCodeString[] = {
 void printTestError(int testNum, double a, double b, double c,
                     double trueX1, double trueX2, int trueStatus,
                     double testX1, double testX2, int testStatus) {
-    printf("\nTest %d: " "\033[1;31mFAILED! \033[0m" // TODO CREATE COLOR OUTPUT LIBRARY!!!
-                         "\033[1mA\033[0m" " = %lg, " "\033[1mB\033[0m" " = %lg, " "\033[1mC\033[0m" " = %lg\n"
-                         "\033[1mX1\033[0m" " = %10lg, " "\033[1mX2\033[0m" " = %10lg, " "\033[1mTESTSTATUS\033[0m" " = %10s\n"
-                         "EXPECTED:\n" "\033[1mX1\033[0m" " = %10lg, " "\033[1mX2\033[0m" " = %10lg, "
-                         "\033[1mTRUESTATUS\033[0m" " = %10s\n",
-                         testNum, a, b, c, testX1, testX2, solveCodeString[testStatus],
-                         trueX1, trueX2, solveCodeString[trueStatus]);
+
+    printf("\nTest %3d: ", testNum);
+    customPrint(red, bold, bgDefault, "%-8s", "ERROR! ");
+    printf("a = %-6lg b = %-6lg c = %-6lg\nx1 = %6.5lg\tx2 = %6.5lg\ttestStatus = %d\n", 
+            a, b, c, testX1, testX2, testStatus);
+    customPrint(yellow, bold, bgDefault, "%s", "EXPECTED:\n");
+    printf("x1 = %6.5lg\tx2 = %6.5lg\ttrueStatus = %d\n", trueX1, trueX2, trueStatus);
 }
 
 void printTestSuccess(int testNum) {
-    printf("\nTest %d: " "\033[1;32mOK!\033[0m\n", testNum);
+    printf("\nTest %3d: ", testNum);
+    customPrint(green, bold, bgDefault, "%-8s", "SUCCESS!\n");
 }
 
 bool testCondition (double x, double y) {
