@@ -4,6 +4,7 @@
 #include "solverTest.h"
 #include "zeroComparison.h"
 #include "rootListStruct.h"
+#include "coefficientListStruct.h"
 
 static const char *solveCodeString[] = {
         "LINEAR_INF_ROOTS",
@@ -38,10 +39,18 @@ bool testCondition (double x, double y) {
 
 void runTest(testData test, int testNum) {
     double testX1 = NAN, testX2 = NAN;
+
     rootList testRootList = {};
     rootListInitialize(&testRootList);
 
-    solve(test.a, test.b, test.c, &testRootList); 
+    coefficientList coefficients = {};
+    coefficientListInitialize(&coefficients);
+    
+    coefficients.a = test.a;
+    coefficients.b = test.b;
+    coefficients.c = test.c;
+
+    solve(&coefficients, &testRootList); 
 
     solveCode testStatus = testRootList.status;
 

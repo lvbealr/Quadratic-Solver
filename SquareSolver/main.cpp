@@ -5,18 +5,20 @@
 
 #include "menu.h"
 #include "coefficientInput.h"
+#include "stdinClean.h"
 
 int main() {
-    char mode[1] = "";
+    char mode = {};
 
-    printf("Choose mode: Test Mode (0) / Manual Mode (1). Input (0/1): ");
-    scanf("%1s", mode);
-    while (getchar() != '\n') {}
+    printf("Choose mode: Test Mode (T) / Manual Mode (M). Input (T/M): ");
+    mode = getchar();
 
-    if (*mode == '0') {
+    stdinClean();
+
+    if (mode == 'T' || mode == 't') {
         testMode();
     }
-    else if (*mode == '1') {
+    else if (mode == 'M' || mode == 'm') {
         manualMode();
     }
     else {

@@ -5,18 +5,21 @@
 #include "solver.h"
 #include "solverTest.h"
 #include "coefficientInput.h"
+#include "coefficientListStruct.h"
 
 /*/ START MODE MENU /*/
 int manualMode() {
-    double a = NAN, b = NAN, c = NAN;
-
+    
     rootList roots = {};
     rootListInitialize(&roots);
 
-    bool validCoefficientInput = coefficientInput(&a, &b, &c);
+    coefficientList coefficients = {};
+    coefficientListInitialize(&coefficients);
+
+    bool validCoefficientInput = coefficientInput(&coefficients);
 
     if (validCoefficientInput) {
-        solve(a, b, c, &roots);
+        solve(&coefficients, &roots);
     }
     else {
         return -1;
@@ -25,6 +28,7 @@ int manualMode() {
     printResult(&roots);
 
     rootListDestruct(&roots);
+    coefficientListDestruct(&coefficients);
     return 0;
 }
 

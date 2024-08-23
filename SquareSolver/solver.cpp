@@ -3,10 +3,14 @@
 
 #include "zeroComparison.h"
 #include "rootListStruct.h"
+#include "coefficientListStruct.h"
 
-void linearSolver(const double b, const double c, rootList *roots) {
+void linearSolver(coefficientList *coefficients, rootList *roots) {
     assert(roots != NULL);
     
+    double b = coefficients->b;
+    double c = coefficients->c;
+
     if (zeroComparison(b) == DOUBLE_EQUAL_EPS) {
         if (zeroComparison(c) == DOUBLE_EQUAL_EPS) {
             setStatus(roots, LINEAR_INF_ROOTS);
@@ -21,9 +25,12 @@ void linearSolver(const double b, const double c, rootList *roots) {
     }
 }
 
-void squareSolver(const double a, const double b,
-                  const double c, rootList *roots) {
+void squareSolver(const coefficientList *coefficients, rootList *roots) {
     assert(roots != NULL);
+
+    const double a = coefficients->a;
+    const double b = coefficients->b;
+    const double c = coefficients->c;
 
     double const discriminant = b*b - 4*a*c;
 
@@ -53,15 +60,13 @@ void squareSolver(const double a, const double b,
     }
 }
 
-void solve(const double a, const double b,
-           const double c, rootList *roots) {
-
+void solve(coefficientList *coefficients, rootList *roots) {
     assert(roots != NULL);
 
-    if (zeroComparison(a) == DOUBLE_EQUAL_EPS) {
-        linearSolver(b, c, roots);
+    if (zeroComparison(coefficients->a) == DOUBLE_EQUAL_EPS) {
+        linearSolver(coefficients, roots);
     }
     else {
-        squareSolver(a, b, c, roots);
+        squareSolver(coefficients, roots);
     }
 }
