@@ -22,7 +22,7 @@ void printTestError(int testNum, double a, double b, double c,
                     double testX1, double testX2, int testStatus) {
 
     printf("\nTest %3d: ", testNum);
-    customPrint(red, bold, bgDefault, "%-8s", "ERROR! ");
+    customPrint(red, bold, bgDefault, "%-8s", "[ERROR] ");
     printf("a = %-6lg b = %-6lg c = %-6lg\nx1 = %6.5lg\tx2 = %6.5lg\ttestStatus = %d\n", 
             a, b, c, testX1, testX2, testStatus);
     customPrint(yellow, bold, bgDefault, "%s", "EXPECTED:\n");
@@ -31,7 +31,7 @@ void printTestError(int testNum, double a, double b, double c,
 
 void printTestSuccess(int testNum) {
     printf("\nTest %3d: ", testNum);
-    customPrint(green, bold, bgDefault, "%-8s", "SUCCESS!\n");
+    customPrint(green, bold, bgDefault, "%-8s", "[SUCCESS]\n");
 }
 
 bool testCondition (double x, double y) {
