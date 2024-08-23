@@ -1,3 +1,16 @@
+// TODO DOXYGEN IN HEADERS
+// TODO GOOGLE TESTS -VV parse args new module
+// TODO flag --test (default manual), --VVtests
+/**
+ * @file coefficientInput.h
+ * @author lvbealr
+ * @brief Manual Entry Of Coefficients
+ * @version 0.1
+ * @date 2024-08-23
+ * 
+ * @copyright Copyright (c) 2024 
+ */
+
 #include <cstdio>
 #include <cassert>
 #include <math.h>

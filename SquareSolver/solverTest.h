@@ -6,6 +6,10 @@
 #include "solver.h"
 
 /*/ START OF TESTDATA STRUCT /*/
+/**
+ * @brief Struct That Contains Data To Test The Programm
+ * 
+ */
 struct testData {
     double a             = NAN;
     double b             = NAN;
@@ -16,12 +20,53 @@ struct testData {
 };
 /*/ END OF TESTDATA STRUCT /*/
 
+/**
+ * @brief Print Possible Error Message During Tests
+ * 
+ * @param [in] testNum 
+ * @param [in] coefficient_a 
+ * @param [in] coefficient_b 
+ * @param [in] coefficient_c 
+ * @param [in] trueX1 
+ * @param [in] trueX2 
+ * @param [in] trueStatus 
+ * @param [in] testX1 
+ * @param [in] testX2 
+ * @param [in] testStatus 
+ */
 void printTestError(int testNum, double coefficient_a, double coefficient_b, double coefficient_c,
                     double trueX1, double trueX2, int trueStatus,
                     double testX1, double testX2, int testStatus);
+
+/**
+ * @brief Print Possible Message Of Success During Tests
+ * 
+ * @param [in] testNum 
+ */
 void printTestSuccess(int testNum);
+
+/**
+ * @brief Compare The Received Values With The Expected Ones 
+ * 
+ * @param [in] x 
+ * @param [in] y 
+ * @return true 
+ * @return false 
+ */
 bool testCondition(double x, double y);
+
+/**
+ * @brief Solve Equation With Test Values
+ * 
+ * @param [in] test 
+ * @param [in] testNum 
+ */
 void runTest(testData test, int testNum);
+
+/**
+ * @brief Run All Tests To Check The Programm
+ * 
+ */
 void runAllTests();
 
 #endif
