@@ -18,7 +18,7 @@ void runGoogleTest(rootList *receivedValues, double *testX1, double *testX2,
     testCoefficients.c = tests[testNum].c;
 
     solve(&testCoefficients, receivedValues);
-    
+
     *receivedStatus = receivedValues->status;
 
     switch (*receivedStatus) {
@@ -70,6 +70,7 @@ TEST(QUADRATIC_EQUATION, ALL_NULLS_FAIL) {
     EXPECT_TRUE(testCondition(receivedStatus, tests[googleTestNum].trueStatus));
     googleTestNum++;
 }
+
 
 TEST(QUADRATIC_EQUATION, ALL_NULLS_EXCEPT_C_SUCCESS) {
     double testX1 = NAN, testX2 = NAN;
