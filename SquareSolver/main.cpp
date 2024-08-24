@@ -4,7 +4,7 @@
 /**
  * @file main.cpp
  * @author lvbealr
- * @brief Manual Entry Of Coefficients
+ * @brief Quadratic Equation Solver & Tester
  * @version 0.1
  * @date 2024-08-23
  * 
