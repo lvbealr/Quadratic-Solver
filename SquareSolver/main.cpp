@@ -1,5 +1,5 @@
 // TODO DOXYGEN IN HEADERS
-// TODO GOOGLE TESTS -VV parse args new module
+// TODO --VV parse args new module
 // TODO flag --test (default manual), --VVtests
 /**
  * @file main.cpp

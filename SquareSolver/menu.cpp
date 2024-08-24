@@ -6,6 +6,7 @@
 #include "solverTest.h"
 #include "coefficientInput.h"
 #include "coefficientListStruct.h"
+#include "googleTests.h"
 
 /*/ START MODE MENU /*/
 int manualMode() {
@@ -34,5 +35,9 @@ int manualMode() {
 
 void testMode() {
     runAllTests();
+}
+
+void googleTestMode(int argc, char *argv[]) {
+    runAllGoogleTests(argc, argv);
 }
 /*/ END MODE MENU /*/
