@@ -2,7 +2,7 @@
 // TODO GOOGLE TESTS -VV parse args new module
 // TODO flag --test (default manual), --VVtests
 /**
- * @file coefficientInput.h
+ * @file main.cpp
  * @author lvbealr
  * @brief Manual Entry Of Coefficients
  * @version 0.1
@@ -15,28 +15,13 @@
 #include <cassert>
 #include <math.h>
 #include <cctype>
+#include <cstring>
 
 #include "menu.h"
 #include "coefficientInput.h"
 #include "stdinClean.h"
+#include "consoleParser.h"
 
-int main() {
-    char mode = {};
-
-    printf("Choose mode: Test Mode (T) / Manual Mode (M). Input (T/M): ");
-    mode = getchar();
-
-    stdinClean();
-
-    if (mode == 'T' || mode == 't') {
-        testMode();
-    }
-    else if (mode == 'M' || mode == 'm') {
-        manualMode();
-    }
-    else {
-        printf("Wrong mode input!");
-    }
-
-    return 0;
+int main(int argc, char *argv[]) {
+    return consoleParser(argc, argv);
 }
