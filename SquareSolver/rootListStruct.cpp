@@ -3,10 +3,11 @@
 #include <cmath>
 
 #include "rootListStruct.h"
+#include "customAssert.h"
 
 /*/ START OF ROOTLIST STRUCT /*/
 void rootListInitialize(rootList *roots) {
-    assert(roots != NULL);
+    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
 
     roots->count = 0;
     for (int index = 0; index < MAX_ROOT_COUNT; index++) {
@@ -16,7 +17,7 @@ void rootListInitialize(rootList *roots) {
 }
 
 void rootListDestruct(rootList *roots) {
-    assert(roots != NULL);
+    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
 
     roots->count = INVALID_COUNT;
     for (int index = 0; index < MAX_ROOT_COUNT; index++) {
@@ -26,7 +27,7 @@ void rootListDestruct(rootList *roots) {
 }
 
 int getRootCount(const rootList *roots) {
-    assert(roots != NULL);
+    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
 
     switch (roots->status) {
         case LINEAR_ONE_ROOT:
@@ -44,7 +45,7 @@ int getRootCount(const rootList *roots) {
 }
 
 bool pushRoot(rootList *roots, double root) {
-    assert(roots != NULL);
+    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
 
     if ((roots->count < 0) && (roots->count >= getRootCount(roots))) {
         return false;
@@ -56,7 +57,7 @@ bool pushRoot(rootList *roots, double root) {
 }
 
 void printRoot(const rootList *roots) {
-    assert(roots != NULL);
+    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
 
     int rootCount = getRootCount(roots);
     for (int index = 0; index < rootCount; index++) {
@@ -65,13 +66,13 @@ void printRoot(const rootList *roots) {
 }
 
 void setStatus(rootList *roots, solveCode status) {
-    assert(roots != NULL);
+    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
 
     roots->status = status;
 }
 
 void printResult(rootList *roots) {
-    assert(roots != NULL);
+    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
     
     switch (roots->status) {
         case LINEAR_INF_ROOTS: {
