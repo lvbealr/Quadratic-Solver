@@ -110,7 +110,7 @@ Solutions: -2.11963	0.7863
 ```bash
 ./main --test
 
-Test   1: $${\color{red}Success}$$
+Test   1: [SUCCESS]
 
 Test   2: [SUCCESS]
 
