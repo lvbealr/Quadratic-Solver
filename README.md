@@ -75,7 +75,7 @@ The program provides several operating modes.
 In manual mode, the program will ask you to enter the coefficients of the quadratic equation with the following message:
 
 ```bash
-./main -> Input values of coefficients a, b, c: ### your input
+./main > Input values of coefficients a, b, c: ### your input
 ```
 
 ### TEST MODE
