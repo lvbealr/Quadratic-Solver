@@ -1,12 +1,16 @@
+#include <cstdio>
 #include <cassert>
 #include <math.h>
 
 #include "zeroComparison.h"
 #include "rootListStruct.h"
 #include "coefficientListStruct.h"
+#include "customAssert.h"
+#include "solver.h"
 
-void linearSolver(coefficientList *coefficients, rootList *roots) {
-    assert(roots != NULL);
+int linearSolver(const coefficientList *coefficients, rootList *roots) {
+    customAssert(coefficients != NULL, 1);
+    customAssert(roots        != NULL, 1);
     
     double b = coefficients->b;
     double c = coefficients->c;
@@ -23,10 +27,13 @@ void linearSolver(coefficientList *coefficients, rootList *roots) {
         setStatus(roots, LINEAR_ONE_ROOT);
         pushRoot(roots, -c/b);
     }
+
+    return 0;
 }
 
-void squareSolver(const coefficientList *coefficients, rootList *roots) {
-    assert(roots != NULL);
+int squareSolver(const coefficientList *coefficients, rootList *roots) {
+    customAssert(coefficients != NULL, 1);
+    customAssert(roots        != NULL, 1);
 
     const double a = coefficients->a;
     const double b = coefficients->b;
@@ -58,10 +65,13 @@ void squareSolver(const coefficientList *coefficients, rootList *roots) {
         default:
             break;
     }
+
+    return 0;
 }
 
-void solve(coefficientList *coefficients, rootList *roots) {
-    assert(roots != NULL);
+int solve(coefficientList *coefficients, rootList *roots) {
+    customAssert(coefficients != NULL, 1);
+    customAssert(roots        != NULL, 1);
 
     if (zeroComparison(coefficients->a) == DOUBLE_EQUAL_EPS) {
         linearSolver(coefficients, roots);
@@ -69,4 +79,6 @@ void solve(coefficientList *coefficients, rootList *roots) {
     else {
         squareSolver(coefficients, roots);
     }
+
+    return 0;
 }

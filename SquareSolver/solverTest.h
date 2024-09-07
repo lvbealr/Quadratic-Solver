@@ -34,7 +34,7 @@ struct testData {
  * @param [in] testX2 
  * @param [in] testStatus 
  */
-void printTestError(int testNum, double coefficient_a, double coefficient_b, double coefficient_c,
+void printTestError(size_t testNum, double coefficient_a, double coefficient_b, double coefficient_c,
                     double trueX1, double trueX2, int trueStatus,
                     double testX1, double testX2, int testStatus);
 
@@ -43,15 +43,14 @@ void printTestError(int testNum, double coefficient_a, double coefficient_b, dou
  * 
  * @param [in] testNum 
  */
-void printTestSuccess(int testNum);
+void printTestSuccess(size_t testNum);
 
 /**
  * @brief Compare The Received Values With The Expected Ones 
  * 
  * @param [in] x 
  * @param [in] y 
- * @return true 
- * @return false 
+ * @return bool Result Of Comparing The Components Of Test
  */
 bool testCondition(double x, double y);
 
@@ -61,7 +60,7 @@ bool testCondition(double x, double y);
  * @param [in] test 
  * @param [in] testNum 
  */
-void runTest(testData test, int testNum);
+void runTest(testData test, size_t testNum);
 
 /**
  * @brief Run All Tests To Check The Programm

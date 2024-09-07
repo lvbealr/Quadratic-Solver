@@ -4,24 +4,14 @@
 #include "solverTest.h"
 #include "zeroComparison.h"
 #include "rootListStruct.h"
-#include "customPrint.h"
+#include "inOutStream.h"
 #include "testData.h"
 
-static const char *solveCodeString[] = {
-        "LINEAR_INF_ROOTS",
-        "LINEAR_NO_ROOTS",
-        "LINEAR_ONE_ROOT",
-        "QUADRATIC_NO_ROOTS",
-        "QUADRATIC_ONE_ROOT",
-        "QUADRATIC_TWO_ROOTS",
-        "INVALID"
-};
-
 /*/ START OF TESTS /*/
-void printTestError(int testNum, double a, double b, double c,
+void printTestError(size_t testNum, double a, double b, double c,
                     double trueX1, double trueX2, int trueStatus,
                     double testX1, double testX2, int testStatus) {
-    printf("\nTest %3d: ", testNum);
+    printf("\nTest %3lu: ", testNum);
     customPrint(red, bold, bgDefault, "%-8s", "[ERROR] ");
     printf("a = %-6lg b = %-6lg c = %-6lg\nx1 = %-6.5lg\tx2 = %-6.5lg\ttestStatus = %d\n", 
             a, b, c, testX1, testX2, testStatus);
@@ -29,8 +19,8 @@ void printTestError(int testNum, double a, double b, double c,
     printf("x1 = %-6.5lg\tx2 = %-6.5lg\ttrueStatus = %d\n", trueX1, trueX2, trueStatus);
 }
 
-void printTestSuccess(int testNum) {
-    printf("\nTest %3d: ", testNum);
+void printTestSuccess(size_t testNum) {
+    printf("\nTest %3lu: ", testNum);
     customPrint(green, bold, bgDefault, "%-8s", "[SUCCESS]\n");
 }
 
@@ -38,7 +28,7 @@ bool testCondition (double x, double y) {
     return (zeroComparison(x - y) == DOUBLE_EQUAL_EPS) || (isnan(x) && isnan(y));
 }
 
-void runTest(testData test, int testNum) {
+void runTest(testData test, size_t testNum) {
     double testX1 = NAN, testX2 = NAN;
 
     rootList testRootList = {};
@@ -87,7 +77,7 @@ void runTest(testData test, int testNum) {
 
 void runAllTests() {
 
-    for (int testNum = 0; testNum < sizeof(tests)/sizeof(tests[0]); testNum++) {
+    for (size_t testNum = 0; testNum < sizeof(tests)/sizeof(tests[0]); testNum++) {
         runTest(tests[testNum], testNum + 1);
     }
 }

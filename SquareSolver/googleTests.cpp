@@ -6,9 +6,20 @@
 #include "testData.h"
 #include "rootListStruct.h"
 #include "solver.h"
+#include "customAssert.h"
 
-void runGoogleTest(rootList *receivedValues, double *testX1, double *testX2,
-                solveCode *receivedStatus, int testNum) {
+// google tests library
+
+/// @brief Number Of Completed Google Tests
+static int googleTestNum = 0;
+
+int runGoogleTest(rootList *receivedValues, double *testX1, double *testX2,
+                  solveCode *receivedStatus, int testNum) {
+
+    customAssert(receivedValues != NULL, 1);
+    customAssert(testX1         != NULL, 1);
+    customAssert(testX2         != NULL, 1);
+    customAssert(receivedStatus != NULL, 1);
 
     coefficientList testCoefficients = {};
     coefficientListInitialize(&testCoefficients);
@@ -39,6 +50,8 @@ void runGoogleTest(rootList *receivedValues, double *testX1, double *testX2,
         default:
             break;
     }
+
+    return 0;
 }
 
 TEST(QUADRATIC_EQUATION, ALL_NULLS_SUCCESS) {
@@ -56,38 +69,7 @@ TEST(QUADRATIC_EQUATION, ALL_NULLS_SUCCESS) {
     googleTestNum++;
 }
 
-TEST(QUADRATIC_EQUATION, ALL_NULLS_FAIL) {
-    double testX1 = NAN, testX2 = NAN;
-    solveCode receivedStatus = INVALID;
-
-    rootList receivedValues = {};
-    rootListInitialize(&receivedValues);
-
-    runGoogleTest(&receivedValues, &testX1, &testX2, &receivedStatus, googleTestNum);
-
-    EXPECT_TRUE(testCondition(testX1, tests[googleTestNum].trueX1));
-    EXPECT_TRUE(testCondition(testX2, tests[googleTestNum].trueX2));
-    EXPECT_TRUE(testCondition(receivedStatus, tests[googleTestNum].trueStatus));
-    googleTestNum++;
-}
-
-
 TEST(QUADRATIC_EQUATION, ALL_NULLS_EXCEPT_C_SUCCESS) {
-    double testX1 = NAN, testX2 = NAN;
-    solveCode receivedStatus = INVALID;
-
-    rootList receivedValues = {};
-    rootListInitialize(&receivedValues);
-
-    runGoogleTest(&receivedValues, &testX1, &testX2, &receivedStatus, googleTestNum);
-
-    EXPECT_TRUE(testCondition(testX1, tests[googleTestNum].trueX1));
-    EXPECT_TRUE(testCondition(testX2, tests[googleTestNum].trueX2));
-    EXPECT_TRUE(testCondition(receivedStatus, tests[googleTestNum].trueStatus));
-    googleTestNum++;
-}
-
-TEST(QUADRATIC_EQUATION, ALL_NULLS_EXCEPT_C_FAIL) {
     double testX1 = NAN, testX2 = NAN;
     solveCode receivedStatus = INVALID;
 
@@ -117,7 +99,7 @@ TEST(QUADRATIC_EQUATION, A_IS_NULL_SUCCESS) {
     googleTestNum++;
 }
 
-TEST(QUADRATIC_EQUATION, A_IS_NULL_FAIL) {
+TEST(QUADRATIC_EQUATION, A_IS_NULL_SUCCESS_1) {
     double testX1 = NAN, testX2 = NAN;
     solveCode receivedStatus = INVALID;
 
@@ -147,7 +129,7 @@ TEST(QUADRATIC_EQUATION, D_LESS_NULL_SUCCESS) {
     googleTestNum++;
 }
 
-TEST(QUADRATIC_EQUATION, D_LESS_NULL_FAIL) {
+TEST(QUADRATIC_EQUATION, D_LESS_NULL_SUCCESS_1) {
     double testX1 = NAN, testX2 = NAN;
     solveCode receivedStatus = INVALID;
 
@@ -177,7 +159,7 @@ TEST(QUADRATIC_EQUATION, D_EQUAL_NULL_SUCCESS) {
     googleTestNum++;
 }
 
-TEST(QUADRATIC_EQUATION, D_EQUAL_NULL_FAIL) {
+TEST(QUADRATIC_EQUATION, D_EQUAL_NULL_SUCCESS_1) {
     double testX1 = NAN, testX2 = NAN;
     solveCode receivedStatus = INVALID;
 
@@ -207,7 +189,7 @@ TEST(QUADRATIC_EQUATION, D_GREATER_NULL_SUCCESS) {
     googleTestNum++;
 }
 
-TEST(QUADRATIC_EQUATION, D_GREATER_NULL_FAIL) {
+TEST(QUADRATIC_EQUATION, D_GREATER_NULL_SUCCESS_1) {
     double testX1 = NAN, testX2 = NAN;
     solveCode receivedStatus = INVALID;
 

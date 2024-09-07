@@ -3,23 +3,26 @@
 #include <cmath>
 
 #include "coefficientListStruct.h"
-
-// TODO INITIALIZE & DESTRUCT????? TWO FUNCTIONS
+#include "customAssert.h"
 
 /*/ START OF COEFFICIENT STRUCT /*/
-void coefficientListInitialize(coefficientList *coefficients) {
-    assert(coefficients != NULL);
+int coefficientListInitialize(coefficientList *coefficients) {
+    customAssert(coefficients != NULL, 1);
     
-    double a = NAN;
-    double b = NAN;
-    double c = NAN;
+    coefficients->a = NAN;
+    coefficients->b = NAN;
+    coefficients->c = NAN;
+
+    return 0;
 }
 
-void coefficientListDestruct(coefficientList *coefficients) {
-    assert(coefficients != NULL);
+int coefficientListDestruct(coefficientList *coefficients) {
+    customAssert(coefficients != NULL, 1);
 
-    double a = NAN;
-    double b = NAN;
-    double c = NAN;
+    coefficients->a = NAN;
+    coefficients->b = NAN;
+    coefficients->c = NAN;
+
+    return 0;
 }
 /*/ END OF COEFFICIENT STRUCT /*/

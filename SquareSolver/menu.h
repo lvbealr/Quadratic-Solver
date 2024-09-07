@@ -4,19 +4,16 @@
 /**
  * @brief Activate Manual Mode To Input Coefficients Of Quadratic Equation
  * 
- * @return int 
  */
-int manualMode();
+void manualMode();
 
 /**
  * @brief Activate Test Mode To Check The Programm With Test Values
- * 
  */
 void testMode();
 
 /**
  * @brief Activate Google Test Mode To Check The Programm With Test Values
- * 
  */
 void googleTestMode(int argc, char *argv[]);
 #endif

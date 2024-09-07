@@ -2,11 +2,13 @@
 #include <cmath>
 
 #include "coefficientInput.h"
-#include "stdinClean.h"
+#include "inOutStream.h"
 #include "coefficientListStruct.h"
+#include "customAssert.h"
 
-bool coefficientInput(coefficientList *coefficients) {
-    
+int coefficientInput(coefficientList *coefficients) {
+    customAssert(coefficients != NULL, 0);
+    // TODO ASSERT rename
     for (int tryNum = 0; tryNum < TRY_COUNT; tryNum++) {
         printf("Input values of coefficients a, b, c: ");
         
@@ -14,9 +16,9 @@ bool coefficientInput(coefficientList *coefficients) {
             stdinClean();
         }
         else {
-            return true;
+            return 0;
         }
     }
     
-    return false;
+    return 1;
 }

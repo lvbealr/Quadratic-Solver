@@ -1,6 +1,3 @@
-// TODO DOXYGEN IN HEADERS
-// TODO --VV parse args new module
-// TODO flag --test (default manual), --VVtests
 /**
  * @file main.cpp
  * @author lvbealr
@@ -19,9 +16,9 @@
 
 #include "menu.h"
 #include "coefficientInput.h"
-#include "stdinClean.h"
+#include "inOutStream.h"
 #include "consoleParser.h"
 
 int main(int argc, char *argv[]) {
-    return consoleParser(argc, argv);
+    consoleParser(argc, argv);
 }

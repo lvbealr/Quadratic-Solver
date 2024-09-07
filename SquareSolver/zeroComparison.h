@@ -12,7 +12,7 @@ enum zeroComparisonCode {
  * @brief Compare Two Double Numbers
  * 
  * @param [in] x 
- * @return zeroComparisonCode 
+ * @return zeroComparisonCode Result Of Comparison Of Double Number With Zero
  */
 zeroComparisonCode zeroComparison(double x);
 

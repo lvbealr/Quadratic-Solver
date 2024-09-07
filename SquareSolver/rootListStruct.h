@@ -35,15 +35,17 @@ struct rootList {
  * @brief Initialize and Destruct RootList Struct 
  * 
  * @param [out] roots 
+ * 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void rootListInitialize(rootList *roots);
-void rootListDestruct(rootList *roots);
+int rootListInitialize(rootList *roots);
+int rootListDestruct(rootList *roots);
 
 /**
  * @brief Get the Root Count Of Quadratic Equation
  * 
  * @param [in] roots 
- * @return int 
+ * @return int Success/Failure Return Code [0/1] 
  */
 int getRootCount(const rootList *roots);
 
@@ -52,31 +54,33 @@ int getRootCount(const rootList *roots);
  * 
  * @param [out] roots 
  * @param [in] root 
- * @return true 
- * @return false 
+ * @return int Success/Failure Return Code [0/1] 
  */
-bool pushRoot(rootList *roots, double root);
+int pushRoot(rootList *roots, double root);
 
 /**
  * @brief Print List Of Roots
  * 
  * @param [in] roots 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void printRoot(const rootList *roots);
+int printRoot(const rootList *roots);
 
 /**
  * @brief Set the Type (Status) Of Quadratic Equation
  * 
  * @param [out] roots 
  * @param [in] statusCode 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void setStatus(rootList *roots, solveCode statusCode);
+int setStatus(rootList *roots, solveCode statusCode);
 
 /**
  * @brief Print Result Of Equation Solve
  * 
  * @param [in] roots 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void printResult(rootList *roots);
+int printResult(rootList *roots);
 /*/ FUNCTION PROTOTYPES /*/
 #endif 

@@ -2,18 +2,24 @@
 #include <cstring>
 
 #include "menu.h"
+#include "consoleParser.h"
 
 void consoleParser(int argc, char *argv[]) {
     if (argc == 1) {
         manualMode();
     }
     else {
-        for (int i = 1; i < argc; i++) {
-            if (!strcmp(argv[i], "--gtest")) {
+        for (int flagNumber = 1; flagNumber < argc; flagNumber++) {
+
+            if (!strcmp(argv[flagNumber], "--gtest")) {
                 googleTestMode(argc, argv);
             }
-            else if (!strcmp(argv[i], "--test")) {
+            
+            else if (!strcmp(argv[flagNumber], "--test")) {
                 testMode();
+            }
+            else {
+                printf("This Flag [%s] Doesn't Exist", argv[flagNumber]);
             }
         }
     }

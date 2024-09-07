@@ -14,9 +14,8 @@ const int TRY_COUNT = 3;
  * @brief Check Status Of Input Coefficients
  * 
  * @param [out] coefficients 
- * @return true 
- * @return false 
+ * @return int Success/Failure Return Code [0/1] 
  */
-bool coefficientInput(coefficientList *coefficients);
+int coefficientInput(coefficientList *coefficients);
 
 #endif

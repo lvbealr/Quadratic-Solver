@@ -5,7 +5,7 @@
 
 /**
  * @brief Run Google Tests
- * 
+ * @return int Success/Failure Return Code [0/1] 
  */
 int runAllGoogleTests(int argc, char *argv[]);
 
@@ -17,12 +17,9 @@ int runAllGoogleTests(int argc, char *argv[]);
  * @param [out] testX2 
  * @param [out] receivedStatus 
  * @param [in] testNum 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void runGoogleTest(rootList *receivedValues, double *testX1, double *testX2,
+int runGoogleTest(rootList *receivedValues, double *testX1, double *testX2,
                 solveCode *receivedStatus, int testNum);
-
-
-/// @brief Number Of Completed Google Tests
-static int googleTestNum = 0;
 
 #endif

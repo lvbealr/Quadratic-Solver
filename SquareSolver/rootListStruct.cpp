@@ -6,28 +6,30 @@
 #include "customAssert.h"
 
 /*/ START OF ROOTLIST STRUCT /*/
-void rootListInitialize(rootList *roots) {
-    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
+int rootListInitialize(rootList *roots) {
+    customAssert(roots != NULL, 1);
 
     roots->count = 0;
     for (int index = 0; index < MAX_ROOT_COUNT; index++) {
         roots->roots[index] = INFINITY;
     }
     roots->status = INVALID;
+    return 0;
 }
 
-void rootListDestruct(rootList *roots) {
-    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
+int rootListDestruct(rootList *roots) {
+    customAssert(roots != NULL, 1);
 
     roots->count = INVALID_COUNT;
     for (int index = 0; index < MAX_ROOT_COUNT; index++) {
         roots->roots[index] = INFINITY;
     }
     roots->status = INVALID;
+    return 0;
 }
 
 int getRootCount(const rootList *roots) {
-    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
+    customAssert(roots != NULL, 1);
 
     switch (roots->status) {
         case LINEAR_ONE_ROOT:
@@ -44,8 +46,8 @@ int getRootCount(const rootList *roots) {
     }
 }
 
-bool pushRoot(rootList *roots, double root) {
-    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
+int pushRoot(rootList *roots, double root) {
+    customAssert(roots != NULL, 1);
 
     if ((roots->count < 0) && (roots->count >= getRootCount(roots))) {
         return false;
@@ -56,23 +58,27 @@ bool pushRoot(rootList *roots, double root) {
     return true;
 }
 
-void printRoot(const rootList *roots) {
-    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
+int printRoot(const rootList *roots) {
+    customAssert(roots != NULL, 1);
 
     int rootCount = getRootCount(roots);
     for (int index = 0; index < rootCount; index++) {
         printf("%lg\t", roots->roots[index]);
     }
+
+    return 0;
 }
 
-void setStatus(rootList *roots, solveCode status) {
-    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
+int setStatus(rootList *roots, solveCode status) {
+    customAssert(roots != NULL, 1);
 
     roots->status = status;
+
+    return 0;
 }
 
-void printResult(rootList *roots) {
-    customAssert(roots != NULL, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__);
+int printResult(rootList *roots) {
+    customAssert(roots != NULL, 1);
     
     switch (roots->status) {
         case LINEAR_INF_ROOTS: {
@@ -106,5 +112,7 @@ void printResult(rootList *roots) {
     }
     printRoot(roots);
     printf("\n");
+
+    return 0;
 }
 /*/ END OF ROOTLIST STRUCT /*/

@@ -1,12 +1,15 @@
 #ifndef CUSTOM_ASSERT_H_
-#define CUSTOM_ASSERT_H_
+#define CUSTOM_ASSERT_H_   
 
-enum assertionCode {
-    POINTER_IS_NULL = 0,
-};
+// TODO align \ symbols
+#define customAssert(expression, returnMessage) do { \
+    if (!(expression)) { \
+        printf("Assertion Error: %s, file (%s), function (%s), line %d\n", \
+                #expression, __FILE__, __FUNCTION__, __LINE__); \
+        return returnMessage; \
+    } \
+} while (0)
 
-const char* assertCodeString[] = {"POINTER_IS_NULL", "VALUE_IS_NAN"};
-
-bool customAssert(bool expression, assertionCode code, int line, const char *file, const char *function);
+// why do while 
 
 #endif

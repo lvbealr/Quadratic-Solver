@@ -8,23 +8,26 @@
  * 
  * @param [in] coefficients 
  * @param [out] roots 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void linearSolver(coefficientList *coefficients, rootList *roots);
+int linearSolver(const coefficientList *coefficients, rootList *roots);
 
 /**
  * @brief Activate Mode Of Solving Quadratic Equation
  * 
  * @param [in] coefficients 
  * @param [out] roots 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void squareSolver(coefficientList *coefficients, rootList *roots);
+int squareSolver(const coefficientList *coefficients, rootList *roots);
 
 /**
  * @brief Activate Menu Of Choosing Solve Linear/Quadratic Equation
  * 
  * @param [in] coefficients 
  * @param [out] roots 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void solve(coefficientList *coefficients, rootList *roots);
+int solve(coefficientList *coefficients, rootList *roots);
 
 #endif

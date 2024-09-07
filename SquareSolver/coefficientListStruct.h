@@ -17,14 +17,18 @@ struct coefficientList {
  * @brief Initialize CoefficientList Struct
  * 
  * @param [out] coefficients 
+ * 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void coefficientListInitialize(coefficientList *coefficients);
+int coefficientListInitialize(coefficientList *coefficients);
 
 /**
  * @brief Destruct CoefficientList Struct
  * 
  * @param [out] coefficients 
+ * 
+ * @return int Success/Failure Return Code [0/1] 
  */
-void coefficientListDestruct(coefficientList *coefficients);
+int coefficientListDestruct(coefficientList *coefficients);
 /*/ FUNCTION PROTOTYPES /*/
 #endif

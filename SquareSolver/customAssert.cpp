@@ -9,9 +9,3 @@ bool customAssert(bool expression, assertionCode code, int line, const char *fil
     }
         return true;
     }
-
-
-int main() {
-    customAssert(5 == 6, POINTER_IS_NULL, __LINE__, __FILE__, __FUNCTION__ );
-}
-

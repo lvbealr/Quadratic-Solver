@@ -7,9 +7,10 @@
 #include "coefficientInput.h"
 #include "coefficientListStruct.h"
 #include "googleTests.h"
+#include "menu.h"
 
 /*/ START MODE MENU /*/
-int manualMode() {
+void manualMode() {
     
     rootList roots = {};
     rootListInitialize(&roots);
@@ -17,20 +18,16 @@ int manualMode() {
     coefficientList coefficients = {};
     coefficientListInitialize(&coefficients);
 
-    bool validCoefficientInput = coefficientInput(&coefficients);
-
-    if (validCoefficientInput) {
+    int validCoefficientInput = coefficientInput(&coefficients);
+     
+    if (!validCoefficientInput) {
         solve(&coefficients, &roots);
-    }
-    else {
-        return -1;
     }
 
     printResult(&roots);
 
     rootListDestruct(&roots);
     coefficientListDestruct(&coefficients);
-    return 0;
 }
 
 void testMode() {

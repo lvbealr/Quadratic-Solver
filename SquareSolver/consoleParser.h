@@ -6,8 +6,8 @@
  * 
  * @param [in] argumentsCount 
  * @param [in] arguments 
- * @return int 
+ * @return int Success/Failure Return Code [0/1] 
  */
-int consoleParser(int argumentsCount, char *arguments[]);
+void consoleParser(int argumentsCount, char *aruguments[]);
 
 #endif
